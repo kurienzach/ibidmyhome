@@ -28,6 +28,8 @@ class CreateUsersTable extends Migration
             $table->string('heard_source', 50);
             $table->string('coapplicant', 80);
 
+            $table->boolean('payment');
+
             $table->rememberToken();
             $table->timestamps();
         });

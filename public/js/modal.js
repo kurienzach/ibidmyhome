@@ -6,7 +6,7 @@ $(document).ready(function() {
     // Modal events binding
     $modal_container.click(function() {
         $(this).addClass("scene-hide");
-        $(this).find(".modal-content").empty();
+        // $(this).find(".modal-content").empty();
         modal_visible = false;
     });
 
@@ -16,7 +16,7 @@ $(document).ready(function() {
 
     $modal_container.find(".modal-close").click(function() {
         $modal_container.addClass("scene-hide");
-        $modal_container.find(".modal-content").empty();
+        // $modal_container.find(".modal-content").empty();
         modal_visible = false;
     });
 });

@@ -62,11 +62,11 @@
                 <img class="modal-close" src="{{ url('img/icon-close.svg') }}" alt="">
                 <div class="modal-content">
                     <div class="contact-form">
-                        <div class="errors">
-                            <p>passwords do not match | invalid email address</p>
+                        <div class="errors" style="display:none">
+                            <p></p>
                         </div>
                         <div class="left">
-                            <p>Please fill in your details to view Total Price and Payment Details</p>
+                            <h3>New User? Register Now</h3>
                             <input type="text" id="txtname" placeholder="name" name="name" required>
                             <input type="email" id="txtemail" placeholder="email" name="email" required>
                             <input type="text" id="txtpassword" placeholder="password" name="password" required>
@@ -75,17 +75,20 @@
                         </div>
 
                         <div class="right">
-                            <p>Please fill in your details to view Total Price and Payment Details</p>
+                            <h3>Sign In</h3>
                             <input type="email" id="txtemail" placeholder="email" name="email" required>
                             <input type="password" id="txtpassword" placeholder="password" name="password" required>
                             <div class="clearfix">
-                                <a href="">Forgot Password</a>
+                                <a class="forgot-password" href="#">Forgot Password</a>
                                 <button class="btn-default" type="button">Login</button>
                             </div>
-                            <p>Enter email to reset your password</p>
-                            <div class="passwd-reset clearfix">
-                                <input type="email" id="txtemail" placeholder="email" name="email" required>
-                                <button class="btn-default" type="button">Reset</button>
+
+                            <div class="forgot-passwd-div" style="display:none">
+                                <p>Enter email to reset your password</p>
+                                <div class="passwd-reset clearfix">
+                                    <input type="email" id="txtforgotemail" placeholder="email" name="email" required>
+                                    <button class="btn-default" type="button">Reset</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -152,7 +155,11 @@
 
                 render_cities();
 
-                
+                $('.forgot-password').click(function(e) {
+                    $('.forgot-passwd-div').show();
+                    $('#txtforgotemail').focus();
+                    e.stopPropagation();
+                });
             });
         </script>
     </body>
