@@ -68,7 +68,7 @@ class ProjectsTableSeeder extends Seeder
         	"image_url" => "Harmony.jpg",
         	"brochure_url" => "",
         	"video_url" => "",
-        	"banner_text" => "SAVE RS. 4.6 LAKHS (Approx)",
+        	"banner_text" => "",
         	"market_base" => "Rs 7000 - Rs 7500 psft",
         	"market_total" => "Rs 81.8 - 91.1 lacs",
         	"dev_base" => "Rs 6030 - Rs 6400 psft",

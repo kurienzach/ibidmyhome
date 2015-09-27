@@ -24,12 +24,12 @@ class CreateTableProjects extends Migration
             $table->string('video_url', 100);
             $table->string('banner_text', 100);
 
-            $table->integer('market_base');
-            $table->integer('market_total');
-            $table->integer('dev_base');
-            $table->integer('dev_total');
-            $table->integer('hdfc_base');
-            $table->integer('hdfc_total');
+            $table->string('market_base', 50);
+            $table->string('market_total', 50);
+            $table->string('dev_base', 50);
+            $table->string('dev_total', 50);
+            $table->string('hdfc_base', 50);
+            $table->string('hdfc_total', 50);
             $table->timestamps();
         });
     }
