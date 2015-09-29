@@ -24,11 +24,8 @@ class CreateUsersTable extends Migration
             $table->string('state', 50);
             $table->string('country', 50);
             $table->string('pincode', 10);
-            $table->string('relmanager', 50);
-            $table->string('heard_source', 50);
-            $table->string('coapplicant', 80);
 
-            $table->boolean('payment');
+            $table->boolean('payment_done')->default(false);
 
             $table->rememberToken();
             $table->timestamps();

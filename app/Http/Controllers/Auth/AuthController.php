@@ -21,6 +21,9 @@ class AuthController extends Controller
     |
     */
 
+    protected $redirectPath = '/';
+    protected $loginPath = '/';
+
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
     /**
@@ -60,6 +63,7 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'project_id' => $data['project_id'],
         ]);
     }
 }

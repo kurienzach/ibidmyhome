@@ -17,7 +17,8 @@ class CreateTableProjectunits extends Migration
 
             $table->integer('project_id')->unsigned();
             $table->foreign('project_id')
-                  ->references('id')->on('projects');
+                ->references('id')->on('projects')
+                ->onDelete('cascade');
 
             $table->string('unit_type', 10);
             $table->mediumInteger('area');
@@ -26,7 +27,8 @@ class CreateTableProjectunits extends Migration
             $table->integer('govt_charges');
 
             $table->integer('min_bid_value');
-            $table->integer('highest_bid');
+
+            $table->string('highest_bid');
 
             $table->timestamps();
         });

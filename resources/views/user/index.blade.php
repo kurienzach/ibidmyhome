@@ -19,6 +19,10 @@
 
         <link rel="stylesheet" href="{{ url('css/modal.css') }}">
         <script src="{{ url('js/vendor/modernizr-2.8.3.min.js') }}"></script>
+
+        <script>
+            var modal_on_load = false;
+        </script>
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -62,26 +66,42 @@
                 <img class="modal-close" src="{{ url('img/icon-close.svg') }}" alt="">
                 <div class="modal-content">
                     <div class="contact-form">
-                        <div class="errors" style="display:none">
-                            <p></p>
+                        @if (count($errors) > 0)
+                        <script>
+                            modal_on_load = true;
+                        </script>
+                        <div class="errors">
+                            <p>
+                            @foreach($errors->all() as $error)
+                                {{ $error }} | 
+                            @endforeach
+                            </p>
                         </div>
+                        @endif
                         <div class="left">
                             <h3>New User? Register Now</h3>
-                            <input type="text" id="txtname" placeholder="name" name="name" required>
-                            <input type="email" id="txtemail" placeholder="email" name="email" required>
-                            <input type="text" id="txtpassword" placeholder="password" name="password" required>
-                            <input type="text" id="txtcnfpassword" placeholder="retype password" name="cnfpassword" required>
-                            <button class="btn-default" type="button">Register</button>
+                            <form method="POST" action="{{ url('auth/register') }}">
+                                {!! csrf_field() !!}
+                                <input id="reg_project_id" type="hidden" name="project_id" value="{{ old('project_id') }}">
+                                <input type="text" id="txtname" placeholder="name" name="name" value="{{ old('name') }}" required>
+                                <input type="email" id="txtemail" placeholder="email" name="email" value="{{ old('email') }}" required>
+                                <input type="password" id="txtpassword" placeholder="password" name="password" required>
+                                <input type="password" id="txtcnfpassword" placeholder="retype password" name="password_confirmation" required>
+                                <input class="btn-default" type="submit" name="Register" value="Register">
+                            </form>
                         </div>
 
                         <div class="right">
                             <h3>Sign In</h3>
-                            <input type="email" id="txtemail" placeholder="email" name="email" required>
-                            <input type="password" id="txtpassword" placeholder="password" name="password" required>
-                            <div class="clearfix">
-                                <a class="forgot-password" href="#">Forgot Password</a>
-                                <button class="btn-default" type="button">Login</button>
-                            </div>
+                            <form method="POST" action="{{ url('auth/login') }}">
+                                {!! csrf_field() !!}
+                                <input type="email" id="txtemail" placeholder="email" name="email" value="{{ old('email') }}" required>
+                                <input type="password" id="txtpassword" placeholder="password" name="password" required>
+                                <div class="clearfix">
+                                    <a class="forgot-password" href="#">Forgot Password</a>
+                                    <input class="btn-default" type="submit" value="Login">
+                                </div>
+                            </form>
 
                             <div class="forgot-passwd-div" style="display:none">
                                 <p>Enter email to reset your password</p>
@@ -127,7 +147,7 @@
                         <% } if (brochure_url != "") { %>
                         <a href="#"><i class="fa fa-file-text-o"></i> View Brochure</a>
                         <% } %>
-                        <a class="buy-coupon" href="#"><i class="fa fa-tag"></i> Buy Coupon</a>
+                        <a class="buy-coupon" data-project-id="<%=id%>" href="#"><i class="fa fa-tag"></i> Buy Coupon</a>
                     </div>
                 </div>
             </div>
@@ -154,6 +174,10 @@
             $(document).ready(function() {
 
                 render_cities();
+
+                if (modal_on_load == true) {
+                    show_modal(true);
+                }
 
                 $('.forgot-password').click(function(e) {
                     $('.forgot-passwd-div').show();

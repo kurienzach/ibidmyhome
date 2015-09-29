@@ -21,9 +21,10 @@ $(document).ready(function() {
     });
 });
 
-function show_modal(bool) {
+function show_modal(bool, project_id) {
     if (bool) {
         $modal_container.removeClass('scene-hide');
+        $modal_container.find('#reg_project_id').val(project_id);
         modal_visible = true;
     }
     else {

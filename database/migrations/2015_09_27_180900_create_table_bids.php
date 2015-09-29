@@ -15,14 +15,10 @@ class CreateTableBids extends Migration
         Schema::create('bids', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('user_id')->unsigned();
             $table->integer('unit_id')->unsigned();
             $table->integer('bid_value');
             $table->integer('total_price');
 
-
-            $table->foreign('user_id')
-                  ->references('id')->on('users');
             $table->foreign('unit_id')
                   ->references('id')->on('project_units');
 

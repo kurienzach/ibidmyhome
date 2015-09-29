@@ -12,3 +12,23 @@
 */
 
 Route::get('/', 'UserPagesController@index');
+Route::get('bid', 'UserPagesController@bid');
+Route::post('bid', 'UserPagesController@place_bid');
+
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+Route::get('/payment', 'PaymentController@show_payment');
+Route::post('/payment/process', 'PaymentController@payment_process');
+
+Route::get('admin', 'AdminController@index');
+
+Route::get('admin/login', 'AdminController@show_login');
+Route::post('admin/login', 'AdminController@process_login');
+Route::get('admin/logout', 'AdminController@logout');
+
+Route::get('admin/bid/{id}', 'AdminController@bid');
+Route::get('admin/projects', 'AdminController@projects');
+Route::get('admin/unit/{id}', 'AdminController@edit_unit');
+Route::post('admin/unit', 'AdminController@save_unit');

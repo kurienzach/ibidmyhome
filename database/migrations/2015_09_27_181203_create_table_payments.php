@@ -22,6 +22,10 @@ class CreateTablePayments extends Migration
                   ->references('id')->on('projects');
 
             // Customer Related
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')
+                  ->references('id')->on('users');
+
             $table->string('cust_name', 100);
             $table->string('cust_mail', 100);
             $table->string('cust_mobile', 15);

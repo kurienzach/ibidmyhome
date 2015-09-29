@@ -42,8 +42,7 @@ function render_projects (city) {
 	$projects.first().addClass('expand');
 
 	$projects.find('.buy-coupon').click(function() {
-		console.log('afsd')
-		show_modal(true);
+		show_modal(true, $(this).data('project-id'));
 		return false;
 	});
 }
