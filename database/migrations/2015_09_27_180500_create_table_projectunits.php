@@ -20,7 +20,7 @@ class CreateTableProjectunits extends Migration
                 ->references('id')->on('projects')
                 ->onDelete('cascade');
 
-            $table->string('unit_type', 10);
+            $table->string('unit_type', 20);
             $table->mediumInteger('area');
 
             $table->integer('other_charges');

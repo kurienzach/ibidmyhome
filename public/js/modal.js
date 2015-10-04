@@ -1,34 +1,3 @@
-$modal_container = $('.modal-container');
-
-$(document).ready(function() {
-    var modal_visible = false;
-
-    // Modal events binding
-    $modal_container.click(function() {
-        $(this).addClass("scene-hide");
-        // $(this).find(".modal-content").empty();
-        modal_visible = false;
-    });
-
-    $modal_container.find(".modal").click(function (e) {
-        e.stopPropagation();
-    })
-
-    $modal_container.find(".modal-close").click(function() {
-        $modal_container.addClass("scene-hide");
-        // $modal_container.find(".modal-content").empty();
-        modal_visible = false;
-    });
-});
-
-function show_modal(bool, project_id) {
-    if (bool) {
-        $modal_container.removeClass('scene-hide');
-        $modal_container.find('#reg_project_id').val(project_id);
-        modal_visible = true;
-    }
-    else {
-        $modal_container.addClass('scene-hide');
-        modal_visible = false;
-    }
-}
+/*! MyLib.js 1.0.0 | Aurelio De Rosa (@AurelioDeRosa) | MIT Licensed */
+function show_modal(a,b,c){$modal=$("#"+b),a?($modal.removeClass("scene-hide"),c&&$modal.find("#reg_project_id").val(c),modal_visible=!0):($modal.addClass("scene-hide"),modal_visible=!1)}$modal_container=$(".modal-container"),$(document).ready(function(){var a=!1;$modal_container.click(function(){$(this).addClass("scene-hide"),a=!1}),$modal_container.find(".modal").click(function(a){a.stopPropagation()}),$modal_container.find(".modal-close").click(function(){$modal_container.addClass("scene-hide"),a=!1})});
+//# sourceMappingURL=modal.js.map

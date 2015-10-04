@@ -1,0 +1,1 @@
+Click here to reset your ibidmyhome.com password: {{ url('password/reset/'.$token) }}

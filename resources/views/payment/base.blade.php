@@ -13,7 +13,7 @@
         
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
 
-        <script src="{{ asset('/js/jquery-1.11.0.js') }}"></script>
+        <script src="{{ asset('js/jquery-1.11.0.js') }}"></script>
         
         @yield('head')
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">

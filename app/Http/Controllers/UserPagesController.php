@@ -25,7 +25,7 @@ class UserPagesController extends Controller
         $user = Auth::user();
 
         if ($user->payment_done) {
-            return view('user.dashboard', compact('user')); 
+            return view('user.bid', compact('user')); 
         }
         else {
             return redirect('/payment'); 
@@ -34,34 +34,45 @@ class UserPagesController extends Controller
 
     public function bid()
     {
+        if (!Auth::check() || !Auth::user()->payment_done) {
+            return redirect('/');
+        }
+
         $user = Auth::user();
         return view('user.bid', compact('user'));
     }
 
     public function place_bid(Request $request)
     {
+        if (!Auth::check() || !Auth::user()->payment_done) {
+            return redirect('/');
+        }
+
         $user = Auth::user();
 
         // Verify the unit ID belongs to the project user selected
         $project_unit = ProjectUnit::findOrFail($request->get('unit_id'));
         // [TODO] Test if this check is working
         if ($project_unit->project->id != $user->project_id) {
-            return redirect('bid');
+            return redirect('/bid');
         }
 
         // Verify the bid is a valid integer and is greater than min bid amount
         $bid_value = $request->get('bid_value');
         if (!is_numeric($bid_value) || $bid_value < $project_unit->min_bid_value) {
-            return redirect('bid');
+            return redirect('/bid');
         }
 
         // Check if user already has placed a bid
         if ($user->bid == null) {
             $bid = new Bid();
+            $request->session()->flash('alert', 'We will contact you shortly for a post-dated cheque of INR 3 Lakh. This is mandatory for you to be eligible for the final unit allotment. The cheque will not be banked unless you are alloted the unit of your choice');
+            $request->session()->flash('alert-title', 'Thank you for placing your bid');
         }
         // This is a modification to existing bid
         else {
             $bid = $user->bid()->first();
+            $request->session()->flash('alert', 'Your bid has been successfully modified');
         }
 
         $bid->unit_id = $request->get('unit_id');

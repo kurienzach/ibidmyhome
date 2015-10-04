@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\User;
 use App\Bid;
 use App\ProjectUnit;
 
@@ -20,7 +21,7 @@ class AdminController extends Controller
     {
         if ($request->email == "admin@ibidmyhome.com" && $request->password == "provid30") {
             $request->session()->put('admin', 'true');
-            return redirect('admin');
+            return redirect('/admin');
         }
         else {
             return back()->withInput()->withErrors(['Incorrect Username / Password!!']);
@@ -30,13 +31,13 @@ class AdminController extends Controller
     public function logout(Request $request)
     {
         $request->session()->forget('admin');
-        return redirect('admin/login');
+        return redirect('/admin/login');
     }
 
     public function index(Request $request)
     {
         if (!$request->session()->has('admin')) {
-            return redirect('admin/login');
+            return redirect('/admin/login');
         }
 
         $bids = Bid::all();
@@ -46,7 +47,7 @@ class AdminController extends Controller
     public function bid(Request $request, $id)
     {
         if (!$request->session()->has('admin')) {
-            return redirect('admin/login');
+            return redirect('/admin/login');
         }
 
         $bid = Bid::findOrFail($id);
@@ -56,17 +57,29 @@ class AdminController extends Controller
     public function projects(Request $request)
     {
         if (!$request->session()->has('admin')) {
-            return redirect('admin/login');
+            return redirect('/admin/login');
         }
 
         $units = ProjectUnit::all();
         return view('admin.projects', compact('units'));
     }
 
+    public function users()
+    {
+        $users = User::all();
+        return view('admin.users', compact('users'));
+    }
+
+    public function user_details($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.user_details', compact('user'));
+    }
+
     public function edit_unit(Request $request, $id)
     {
         if (!$request->session()->has('admin')) {
-            return redirect('admin/login');
+            return redirect('/admin/login');
         }
 
         $unit = ProjectUnit::find($id);
@@ -76,13 +89,14 @@ class AdminController extends Controller
     public function save_unit(Request $request)
     {
         if (!$request->session()->has('admin')) {
-            return redirect('admin/login');
+            return redirect('/admin/login');
         }
 
         $unit = ProjectUnit::findOrFail($request->get('unit_id'));
 
         $unit->highest_bid = $request->get('highest_bid');
+        $unit->min_bid_value = $request->get('min_bid_value');
         $unit->save();
-        return redirect('admin/projects');
+        return redirect('/admin/projects');
     }
 }

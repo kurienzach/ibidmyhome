@@ -52,6 +52,10 @@
                     <form class="form">
                         <?php $unit = $bid->project_unit()->first(); ?>
                         <div class="form-group">
+                            <label class="col-sm-4">Project</label>
+                            <p class="col-sm-8">{{ $user->project->name }}</p>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-4">Unit Type</label>
                             <p class="col-sm-8">{{ $unit->unit_type }}</p>
                         </div>

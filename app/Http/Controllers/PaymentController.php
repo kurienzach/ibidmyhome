@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use Auth;
 
+use Mail;
+
 use App\Project;
 use App\Payment;
 
@@ -58,7 +60,7 @@ class PaymentController extends Controller
     */
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     /*
@@ -66,10 +68,16 @@ class PaymentController extends Controller
     */
     public function show_payment(Request $request)
     {
+    	if (!Auth::check()) {
+    	    return redirect('/');
+    	}
+    	
         $user = Auth::user();
         if ($user->payment_done)
             return redirect('/');
-        return view('payment.payment', compact('user'));
+
+        $projects = Project::all();
+        return view('user.payment', compact('user', 'projects'));
     }
 
     private function create_billdesk_msg($uniqueID, $name, $projectName, $amount) {
@@ -89,6 +97,10 @@ class PaymentController extends Controller
     */
     public function payment_process(Request $request)
     {
+        if (!Auth::check()) {
+    	    return redirect('/');
+    	}
+    	
         //return $request->all();
         if (!$request->has('AgreedTerms')) {
             return redirect()->back()->withInput()->withErrors(['msg' => 'Please accept the terms and conditions']); 
@@ -116,7 +128,11 @@ class PaymentController extends Controller
         $booking = new Payment();
 
         // Project details
-        $booking->project_id=$user->project_id;
+        // User can select a different project here
+        $booking->project_id=$request->get('project_id');
+        
+        $user->project_id = $request->get('project_id');
+        $user->save();
 
         // Fill in customer details
         $booking->user_id = $user->id;
@@ -130,69 +146,15 @@ class PaymentController extends Controller
         $booking->pincode = $request->get('pincode');
         $booking->panno = $request->get('panno');
 
-        $booking->save();
+        //$booking->save();
 
         $booking->booking_id='IBIDMYHOME' . Carbon::now('Asia/Kolkata')->format('HisdmY') . $booking->id;
         $booking->paymentstatus="Pending";
-        $booking->amount=25000.00;
+        $booking->amount=2.00;
 
         $booking->save();
 
             // Temp Code for testing
-            //$booking->paymentstatus="Success";
-
-            //$user = $booking->user()->first();
-
-            //$user->mobile = $booking->cust_mobile;
-            //$user->address = $booking->cust_address;
-            //$user->city = $booking->city;
-            //$user->state = $booking->state;
-            //$user->country = $booking->country;
-            //$user->pincode = $booking->pincode;
-            //$user->payment_done = true;
-
-            //$user->payment_id = $booking->id;
-
-            //$user->save();
-
-            //$booking->save();
-
-            //return redirect('/');
-
-        $msg = $this->create_billdesk_msg($booking->booking_id, $booking->cust_name, 'IBIDMYHOME', 2);
-
-        return view('payment.process', ['msg' => $msg]);
-    }
-
-    public function gateway(Request $request)
-    {
-        //return $request->all();
-        if (!$request->has('msg')) {
-            return view('payment.gateway', ['msg' => 'An error occured during the payment process']);
-        }
-
-        list($dummy, $recordid, $payref1, $payref2, $amount, $dummy, $dummy, $dummy, $dummy, $dummy, $dummy, $dummy, $dummy, $dummy, $paystatuscode, $dummy, $dummy, $dummy, $dummy, $dummy, $recordidval, $name, $projectName, $dummy, $dummy,$payhashstr)=explode('|', $request->get('msg'));
-
-        // Verify the response checksum before using the data
-        $response_msg = explode('|', $request->get('msg'));
-        $hash = $response_msg[sizeof( $response_msg ) - 1];
-
-        $commonkey = "zegOdAeHXRNG";
-        $checksum = strtoupper(hash_hmac('sha256', implode('|', array_slice($response_msg, 0, sizeof($response_msg) - 1)) , $commonkey, false)); 
-
-        // The computed hash and the hash obtained does not match
-        if ($hash != $checksum)
-            return view('payment.gateway', ['msg' => 'An error occured during the payment process']);
-
-        $booking = Payment::where('booking_id', 'EOI' . $recordid)->first();
-
-        // Payment success
-        if ($paystatuscode == '0300') {
-
-            // Update bookings table to mark booking as success
-            $booking->statuscode = $paystatuscode;
-            $booking->txnreferenceno = $payref1;
-            $booking->bankreferenceno = $payref2;
             $booking->paymentstatus="Success";
 
             $user = $booking->user()->first();
@@ -211,24 +173,86 @@ class PaymentController extends Controller
 
             $booking->save();
 
-            $this->sendSmS($booking->cust_mobile, $booking->amount, $booking->flat_id, 'The Tree');
+            return view('user.payment_success');
+
+        $msg = $this->create_billdesk_msg($booking->booking_id, $booking->cust_name, 'IBIDMYHOME', $booking->amount);
+
+        return view('user.payment_process', ['msg' => $msg]);
+    }
+
+    public function gateway(Request $request)
+    {
+        
+        if (!$request->has('msg')) {
+            return view('user.payment_error', ['msg' => 'An error occured during the payment process']);
+        }
+
+        list($dummy, $recordid, $payref1, $payref2, $amount, $dummy, $dummy, $dummy, $dummy, $dummy, $dummy, $dummy, $dummy, $dummy, $paystatuscode, $dummy, $dummy, $dummy, $dummy, $dummy, $recordidval, $name, $projectName, $dummy, $dummy,$payhashstr)=explode('|', $request->get('msg'));
+
+        // Verify the response checksum before using the data
+        $response_msg = explode('|', $request->get('msg'));
+        $hash = $response_msg[sizeof( $response_msg ) - 1];
+
+        $commonkey = "zegOdAeHXRNG";
+        $checksum = strtoupper(hash_hmac('sha256', implode('|', array_slice($response_msg, 0, sizeof($response_msg) - 1)) , $commonkey, false)); 
+
+        // The computed hash and the hash obtained does not match
+        if ($hash != $checksum)
+            return view('user.payment_error', ['msg' => 'An error occured during the payment process']);
+            
+        $booking_id = substr($recordid, 3);
+
+        $booking = Payment::where('booking_id', $booking_id)->first();
+        
+	$user = $booking->user()->first();
+	
+	if (!Auth::check()) {
+	    Auth::login($user);
+	}        
+
+        // Payment success
+        if ($paystatuscode == '0300') {
+        
+            // Update bookings table to mark booking as success
+            $booking->statuscode = $paystatuscode;
+            $booking->txnreferenceno = $payref1;
+            $booking->bankreferenceno = $payref2;
+            $booking->paymentstatus="Success";
+
+            
+
+            $user->mobile = $booking->cust_mobile;
+            $user->address = $booking->cust_address;
+            $user->city = $booking->city;
+            $user->state = $booking->state;
+            $user->country = $booking->country;
+            $user->pincode = $booking->pincode;
+            $user->payment_done = true;
+
+            $user->payment_id = $booking->id;
+
+            $user->save();
+
+            $booking->save();
+
+            $this->sendSmS($booking->cust_mobile, $booking->amount, $booking->project->name, 'IBIDMYHOME');
 
             // Send email to customer
-            Mail::send('mails.booking_success', ['booking' => $booking], function($m) {
+            Mail::send('mails.booking_success', ['booking' => $booking], function($m) use ($booking){
                 $m->to($booking->cust_mail, $booking->cust_name);
-                $m->subject('Provident housing Flat Successfully booked');
+                $m->subject('IBIDMYHOME Registration Successful');
             });
             // Send email to admin
-            Mail::send('mails.new_booking', ['booking' => $booking], function($m) {
-                $m->to('vantageview@providenthousing.com', 'Vantage View');
-                $m->subject('New Booking in Project ' . $booking->project()->first()->name);
+            Mail::send('mails.new_booking', ['booking' => $booking], function($m) use ($booking) {
+                $m->to('info@ibidmyhome.com', 'IBidMyHome');
+                $m->subject('New Payment received' . $booking->project->name);
             });
             
-            return redirect('/');
+            return view('user.payment_success');
         }
         // Payment failure
         else {
-            return view('payment.gateway', ['msg' => 'An error occured during the payment process']);
+            return view('user.payment_error', ['msg' => 'An error occured during the payment process']);
         }
         
     }
