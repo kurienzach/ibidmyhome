@@ -12,17 +12,17 @@
 
         <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
-        <!--link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}"-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+        <!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"-->
 
-        <!--link rel="stylesheet" href="{{ asset('css/normalize.css') }}"-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">        
+        <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
+        <!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css"-->        
         
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
         <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
-        <!--script src="{{ asset('js/vendor/modernizr-2.8.3.min.js') }}"></script-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <script src="{{ asset('js/vendor/modernizr-2.8.3.min.js') }}"></script>
+        <!--script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script-->
 
         @section('head')
         @show
@@ -36,33 +36,16 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <div class="loader hide">
-            <div class="icon">
-            <i class="fa fa-circle-o-notch fa-spin"></i>
-            </div>
-        </div>
-
-        <!-- Header -->
-        <div class="header">
-        <div class="header-content clearfix">
-            <div class="logo"><img src="{{ asset('img/logo.png') }}"></div>
-            @if(Auth::user() == null)
-            <button class="btn-default btn-login">Login</button>
-            @else 
-            <a href="{{ url('auth/logout') }}" class="btn-default btn-login">Logout</a>
-            @endif
-        </div>
-        </div>
-
-        <div class="spacer"></div>
+        @include('user.header')
 
         @yield('content')
 
         @section('scripts')
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="{{ asset('js/vendor/jquery-1.11.3.min.js') }}"><\/script>')</script>
-        <!--script src="{{ asset('js/vendor/lodash.min.js') }}"></script-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+        <script src="{{ asset('js/vendor/lodash.min.js') }}"></script>
+        <!--script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script-->
+        <script src="{{ asset('js/plugins.js') }}"></script>
         <script src="{{ asset('js/modal.js') }}"></script>
         <script src="{{ asset('js/main.js') }}"></script>
 

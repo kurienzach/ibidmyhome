@@ -8,13 +8,35 @@
 @section('content')
 <div class="content">
     <div class="project-box">
-        <div class="city-list">
+        <div class="city-list" class="clearfix">
             @if ($user->bid()->first() != null)
-            <h3>My Bid for Base Price - Rs {{ $user->bid->bid_value }} psqft + Other Charges</h3>
+            <h3>My Bid for {{ $user->project->name }} for Base Price - Rs {{ $user->bid->bid_value }} psqft + Other Charges</h3>
             @else
-            <h3>My Bid for Base Price</h3>
+            <h3>My Bid for {{ $user->project->name }}</h3>
             @endif
         </div>    
+
+        <div class="city-list">
+        	<ul class="clearfix">
+        		<li><a class="select" href="#">My Bid</a></li>
+        		<li><a href="{{ asset('doc1.pdf') }}">Link 1</a></li>
+        		<li><a href="{{ asset('doc1.pdf') }}">Link 2</a></li>
+        		<li><a href="{{ asset('doc1.pdf') }}">Link 3</a></li>
+        	</ul>
+        </div>
+
+        <div class="project-select">
+        	<form class="form-inline" action="{{ url('/change_project') }}" method="POST">
+	        	{!! csrf_field() !!}
+        	    <p>Selected Project</p>
+        	    <select class="filed_select" data-val="true" data-val-required="*" style="width:50%; margin-left: 15px;" id="ProjectID" name="project_id">
+        	        @foreach($projects as $project)
+        	        <option value="{{ $project->id }}">{{ $project->location }} - {{ $project->city }} | {{ $project->name }}</option>
+        	        @endforeach
+        	    </select>
+        	  <input type="submit" class="btn btn-default" style="margin-left: 15px;" value="Change">
+        	</form>
+        </div>
             
         <div class="project-list">
             <br>
@@ -28,13 +50,13 @@
                     <div class="accordion-body clearfix">
                         <div class="left">
                             <img src="{{ asset('img/' . $project->image_url) }}" alt="">
-                            <div class="button-bar" style="text-align: center;">
+                            <div class="button-bar1" style="text-align: center;">
                                 @if ($project->video_url != "")
-                                <a href="{{ $project->video_url }}"><i class="fa fa-play-circle-o"></i> Video</a>
+                                <a href="{{ $project->video_url }}">Watch Video</a>
                                 @endif
-
+<br><br>
                                 @if ($project->brochure_url != "")
-                                <a href="{{ $project->brochure_url }}"><i class="fa fa-file-text-o"></i> Brochure</a>
+                                <a href="{{ $project->brochure_url }}">View E_Brochure</a>
                                 @endif
                             </div>
                         </div>
@@ -45,32 +67,35 @@
                                 {!! $project->description !!}
                             </div>
 
-                            <div class="price-field clearfix">
-                                <p class="text">Base Price prevailing in the market for similar projects</p> <p class="value">: {{ $project->market_base }}</p>
+                            <div class="price-field clearfix" >
+                                <p class="text" style="width:320px">Base Price for similar projects in the market</p> <p class="value">: {{ $project->market_base }}</p>
                             </div>
                             <div class="price-field clearfix">
-                                <p class="text">Developers Base Price</p> <p class="value">: {{ $project->dev_base }}</p>
+                                <p class="text" style="width:320px">Developer's Current Base Price</p> <p class="value">: {{ $project->dev_base }}</p>
                             </div>
                             <div class="price-field highlight clearfix">
-                                <p class="text">HDFC reality's "BEST VALUE PRICE"</p> <p class="value">: {{ $project->hdfc_base }}</p>
+                                <p class="text" style="width:320px">HDFC Realty's Minimum Base Price2Bid</p> <p class="value">: {{ $project->hdfc_base }}</p>
                             </div>
                         </div>
                     </div>
                     
                     <div class="accordion-body bid-box clearfix">
                         <div class="left">
-                            <div class="current-highest-bid">
-                                Select an apartment type to place bid
-                            </div>
+                            <p style="width:400px"></p>
                         </div>
 
                         <div class="right">
                             <select id="unit_select" name="unit_type">
-                                <option disabled selected>Select Apartment Type</option>
+                                <option disabled selected>Select Unit Type</option>
                                 @foreach($user->project->project_units as $unit)
                                 <option value="{{ $unit->id }}">{{ $unit->unit_type }} ({{ $unit->area }} sqft)</option>
                                 @endforeach
                             </select>
+                            <br/><br/>
+                       <div><p>
+                      <a href="{{ asset('bidding_doc.pdf') }}">Before placing your bids Click here to understand about Other Charges </a>
+			</p>
+			</div>
 
                             <div class="unit_details" style="display:none; padding-top: 20px; ">
                                 <form method="POST" action="{{ url('bid') }}" class="bid-form">
@@ -122,6 +147,8 @@
 <script src="{{ asset('/js/sweetalert.min.js') }}" type="text/javascript"></script>
 
 <script>
+    $('#ProjectID').val({{ $user->project_id }});
+
     var project_units = {!! $user->project->project_units !!};
 
     var selected_unit = null;
@@ -158,7 +185,7 @@
         }
     });
 
-    $('form').submit(function() {
+    $('.unit_details form').submit(function() {
         bid = Number.parseInt($('.bid_value').val());
         if (isNaN(bid) || bid < selected_unit['min_bid_value']) {
             return false;

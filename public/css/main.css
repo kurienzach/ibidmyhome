@@ -1,1 +1,692 @@
-/*! HTML5 Boilerplate v5.2.0 | MIT License | https://html5boilerplate.com/ */fieldset,hr{border:0;padding:0}.btn-default,.btn-login,.button-bar a,.city-list ul li a{text-decoration:none}html{color:#222;line-height:1.4}::-moz-selection{background:#b3d4fc;text-shadow:none}::selection{background:#b3d4fc;text-shadow:none}hr{display:block;height:1px;border-top:1px solid #ccc;margin:1em 0}audio,canvas,iframe,img,svg,video{vertical-align:middle}fieldset{margin:0}textarea{resize:vertical}.browserupgrade{margin:.2em 0;background:#ccc;color:#000;padding:.2em 0}.header,.header-content{height:80px;background:#fff}body,html{font-family:'Open Sans',sans-serif;font-size:18px}.header{position:fixed;top:0;width:100%;z-index:50;border-bottom:1px solid #dbdddf}.header-content{width:80%;margin:auto;z-index:1000}.logo{height:120%;min-width:300px;float:left;margin-top:-10px}.logo img{height:100%}.btn-login{float:right;margin-top:20px}.spacer{height:110px}.hero-img{width:100%}.content{width:976px;margin:auto}.project-box{background:#efecdd}.city-list{background-color:#464646;border-bottom:3px solid #efecdd;color:#fff;height:50px}.city-list h3{text-align:center;margin:0;line-height:50px}.city-list ul{margin:0 0 0 20px;padding:0;line-height:50px}.city-list ul li{display:block;float:left;padding:0;height:100%}.city-list ul li a{display:block;margin:0;padding:0 25px;color:#fff;border-right:1px solid #efecdd;cursor:pointer}.city-list ul li a.select{background-color:#1D76BC}.project-list{padding:0 20px}.project *{box-sizing:border-box}.accordion-header{background-color:#464646;color:#fff;height:45px;cursor:pointer}.accordion-header h4{margin:0 30px;padding:0;line-height:45px;font-weight:300;text-transform:uppercase;width:90%;float:left}.accordion-header .icons{position:relative;float:left}.project.expand .accordion-header .icons i:last-child{display:inherit}.project.expand .accordion-body{max-height:500px}.accordion-header .icons i{position:absolute;top:15px;left:0}.project .accordion-header .icons i:last-child{display:none}.accordion-body{padding:0 25px;margin:20px 0 0;max-height:0;overflow:hidden;transition:all .5s ease-out}.accordion-body .left{float:left;width:40%;padding:0 28px;margin:auto}.accordion-body .left .banner{width:100%;text-align:center;background:#ff6;border:1px solid #FFF;font-size:.75em;font-weight:500;padding:4px 0}.accordion-body .left .current-highest-bid{text-align:center;background:#746F52;text-transform:uppercase;color:#fff;padding:10px;font-size:.8em}.accordion-body .left .current-highest-bid p{font-size:1.3em;font-weight:500;margin:10px 0}.accordion-body .right{float:left;width:60%;height:100%;padding:0 10px;font-size:.75em}.accordion-body .right .price-field{background:#908A67;padding:10px;margin-bottom:10px;color:#fff}.accordion-body .right .price-field p{margin:0}.accordion-body .right .price-field p.text{display:inline-block;width:355px;float:left}.accordion-body .right .price-field p.value{display:inline-block;float:left}.accordion-body .right .price-field.highlight{background:#E31E27;color:#fff}.button-bar{text-align:center;margin:25px auto 35px}.button-bar a{background:#DC903B;display:inline-block;padding:10px 15px;color:#fff;border-radius:2px;font-size:1rem}.button-bar a i{margin-right:5px}.footer{text-align:center;font-size:.75em;padding-top:20px;padding-bottom:20px}.footer div{float:left;height:90px;line-height:90px}.footer img{height:90px;float:left;margin-left:200px;margin-right:20px}.loader{position:fixed;width:100%;height:100%;background:rgba(255,255,255,.6);z-index:100}.loader.hide{display:none}.loader .icon{position:absolute;height:40px;width:40px;top:0;left:0;right:0;bottom:0;margin:auto}.btn-default{display:inline-block;border:0;border-radius:2px;padding:10px 15px;font-size:.75em;text-transform:uppercase;color:#fff;background:#DC903B}.btn-default:hover,.button-bar a:hover{background:#E29C4E}.bid-box input[type=text],.bid-box select{padding:10px 15px;background:#fff;border:1px solid #BDB582;width:220px;font-weight:700}.bid-box select{width:300px}.bid-box input[type=submit]{margin-top:20px;font-weight:700;font-size:1.2em}.bid-form p{margin:5px 0;font-size:1.1em}.hidden{display:none!important}.visuallyhidden{border:0;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}.visuallyhidden.focusable:active,.visuallyhidden.focusable:focus{clip:auto;height:auto;margin:0;overflow:visible;position:static;width:auto}.invisible{visibility:hidden}.clearfix:after,.clearfix:before{content:" ";display:table}.clearfix:after{clear:both}@media print{blockquote,img,pre,tr{page-break-inside:avoid}*,:after,:before{background:0 0!important;color:#000!important;box-shadow:none!important;text-shadow:none!important}a,a:visited{text-decoration:underline}a[href]:after{content:" (" attr(href) ")"}abbr[title]:after{content:" (" attr(title) ")"}a[href^="#"]:after,a[href^="javascript:"]:after{content:""}blockquote,pre{border:1px solid #999}thead{display:table-header-group}img{max-width:100%!important}h2,h3,p{orphans:3;widows:3}h2,h3{page-break-after:avoid}}
+/*! HTML5 Boilerplate v5.2.0 | MIT License | https://html5boilerplate.com/ */
+
+/*
+ * What follows is the result of much research on cross-browser styling.
+ * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
+ * Kroc Camen, and the H5BP dev community and team.
+ */
+
+/* ==========================================================================
+   Base styles: opinionated defaults
+   ========================================================================== */
+
+html {
+    color: #222;
+    font-size: 1em;
+    line-height: 1.4;
+}
+
+/*
+ * Remove text-shadow in selection highlight:
+ * https://twitter.com/miketaylr/status/12228805301
+ *
+ * These selection rule sets have to be separate.
+ * Customize the background color to match your design.
+ */
+
+::-moz-selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+::selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+/*
+ * A better looking default horizontal rule
+ */
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+/*
+ * Remove the gap between audio, canvas, iframes,
+ * images, videos and the bottom of their containers:
+ * https://github.com/h5bp/html5-boilerplate/issues/440
+ */
+
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+    vertical-align: middle;
+}
+
+/*
+ * Remove default fieldset styles.
+ */
+
+fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/*
+ * Allow only vertical resizing of textareas.
+ */
+
+textarea {
+    resize: vertical;
+}
+
+/* ==========================================================================
+   Browser Upgrade Prompt
+   ========================================================================== */
+
+.browserupgrade {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
+}
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+html, body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+}
+
+.header{
+    position: fixed;
+    top: 0;
+    height: 80px;
+    width: 100%;
+    background: white;
+    z-index: 50;
+    border-bottom: 1px solid #dbdddf;
+}
+
+.header-content{
+    height: 80px;
+    width: 80%;
+    margin: auto;
+    z-index: 1000;
+     background: white;
+}
+
+.header-content .nav-bar {
+    float: right;
+    margin-top: 30px;
+}
+
+.header-content a {
+    color: #1F4181;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    margin-left: 20px;
+    float: right;
+    font-weight:200;
+}
+
+.logo{
+
+height: 120%;
+min-width: 300px;
+float: left;
+margin-top: -10px;
+}
+
+.logo img{
+height: 100%;
+}
+
+.spacer {
+    height: 80px;
+}
+
+.hero-img {
+    width: 100%;
+}
+
+/* Banner Slider */
+.banner {
+    width: 100%;
+    position: relative;
+    max-height: 650px;
+    overflow: hidden;
+}
+
+.banner ul,
+.banner ul li {
+    margin: 0;
+    padding: 0;
+}
+
+.banner ul li {
+    float: left;
+}
+
+.banner ul li img {
+    width: 100%;
+}
+
+.banner .dot {
+    -webkit-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+    -moz-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+    -ms-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+    -o-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+}
+    
+.banner .dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 20px;
+    margin: 0; padding: 0;
+    text-align: center;
+}
+.banner .dots li {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    margin: 0 4px;
+
+    text-indent: -999em;
+
+    border: 2px solid #fff;
+    border-radius: 6px;
+
+    cursor: pointer;
+    opacity: .4;
+
+    -webkit-transition: background .5s, opacity .5s;
+    -moz-transition: background .5s, opacity .5s;
+    transition: background .5s, opacity .5s;
+}
+.banner .dots li.active {
+    background: #fff;
+    opacity: 1;
+}
+
+.content {
+    width: 976px;
+    margin: auto;
+}
+
+.project-box {
+    background: #efecdd;
+}
+
+.city-list {
+    background-color:;
+    border-bottom: 3px solid:#efecdd;
+    color: #00000;
+    height: 40px;
+}
+
+    .city-list h3 {
+        text-align: center;
+        margin: 0;
+        line-height: 40px;
+        font-size: 16px;
+        font-weight: normal;
+    }
+
+    .city-list ul {
+        margin: 0 0 0 20px;
+        padding: 0;
+        line-height: 50px;
+    }
+
+        .city-list ul li {
+            display: block;
+            float: left;
+            padding: 0;
+            height: 100%;
+        }
+
+            .city-list ul li a {
+                display: block;
+                margin: 0;
+                padding: 0 25px;
+                color: #00000;
+                border-right: 1px solid #efecdd;
+                cursor: pointer;
+                text-decoration: none;
+                color: #000;
+            }
+
+                .city-list ul li a.select {
+                    background-color: #DC903B;
+                }
+
+.project-select {
+    margin: 25px auto 10px;
+    text-align: center;
+}
+
+.project-select .form-inline *{
+    display: inline-block;
+}
+
+.project-select p {
+    font-size: 0.8em;
+}
+
+.project-select select {
+    padding: 10px 15px;
+    border: 1px solid #222;
+    width: 220px;
+    font-weight: 700;
+    font-size: 0.7em;
+}
+
+.project-list {
+    padding: 0 20px;
+}
+
+.project {
+    
+}
+
+.project * {
+    box-sizing: border-box;
+}
+
+.accordion-header {
+    background-color: #464646;
+    color: #fff;
+    height: 45px;
+    cursor: pointer;
+}
+
+.accordion-header h4 {
+    margin: 0 30px;
+    padding: 0;
+    line-height: 45px;
+    font-weight: 300;
+    text-transform: uppercase;
+    width: 90%;
+    float: left;
+}
+
+.accordion-header .icons {
+    position: relative;
+    float: left;
+}
+
+.project.expand .accordion-header .icons i:last-child {
+    display: inherit;
+}
+
+.project.expand .accordion-body {
+    max-height: 500px;
+}
+
+.accordion-header .icons i {
+    position: absolute;
+    top: 15px; left: 0;
+}
+
+.project .accordion-header .icons i:last-child {
+    display: none;
+}
+
+.accordion-body {
+    padding: 0 25px;
+    margin: 20px 0 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all .5s ease-out;
+}
+
+.accordion-body .left {
+    float: left;
+    width: 40%;
+    padding: 0 28px;
+    margin: auto;
+}
+
+        .accordion-body .left .banner {
+            width: 100%;
+            text-align: center;
+            background: #ff6;
+            border: 1px solid #FFF;
+            font-size: .75em;
+            font-weight: 500;
+            padding: 4px 0;
+        }
+
+        .accordion-body .left .current-highest-bid {
+            text-align: center;
+            background: #746F52;
+            text-transform: uppercase;
+            color: #fff;
+            padding: 10px;
+            font-size: .8em;
+        }
+
+.accordion-body .left .current-highest-bid p {
+    font-size: 1.3em;
+    font-weight: 500;
+    margin: 10px 0;
+}
+
+.accordion-body .right {
+    float: left;
+    width: 60%;
+    height: 100%;
+    padding: 0 10px;
+    font-size: 0.75em;
+}
+
+        .accordion-body .right .price-field {
+            background: #efecdd;
+            border: 1px solid #222;
+            padding: 12px;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+.accordion-body .right .price-field p{
+    margin: 0;
+}
+
+.accordion-body .right .price-field p.text{
+    display: inline-block;
+    width: 355px;
+    float: left;
+}
+
+.accordion-body .right .price-field p.value{
+    display: inline-block;
+    float: left;
+}
+
+            .accordion-body .right .price-field.highlight {
+                border: 1px solid #E31E27;
+                color: #222;
+            }
+
+
+.button-bar {
+    text-align: center;
+    margin: 25px auto 35px;
+}
+.button-bar a {
+     background: #DC903B;
+        display: inline-block;
+        padding: 10px 15px;
+        color: #fff;
+        border-radius: 2px;
+        font-size: 15px;
+}
+
+
+.button-bar1 {
+    text-align: center;
+    margin: 20px auto 20px;
+    font-size: 15px;
+    font-color: #00000;
+}
+.button-bar1 a {
+    display: inline-block;
+    padding: 7px,10px;
+    color: #00000;
+    border-radius: 2px;
+    font-size: 15px;
+}
+
+.button-bar a i{
+    margin-right: 5px;
+}
+
+.footer {
+    text-align: right;
+    font-size: .75em;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+    .footer div {
+        text-align: center;
+        height: 90px;
+        line-height: 90px;
+    }
+
+.footer img {
+    height: 90px;
+    float: left;
+    margin-left: 200px;
+    margin-right: 20px;
+}
+
+.loader {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255, 255, 0.6);
+    z-index: 100;
+}
+
+.loader.hide {
+    display: none;
+}
+
+.loader .icon {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    top: 0; left: 0; right: 0; bottom: 0;
+    margin: auto;
+}
+
+.btn-default {
+    display: inline-block;
+    border: 0;
+    border-radius: 2px;
+    padding: 10px 15px;
+    font-size: .79em;
+    
+    color: #fff;
+    background: #DC903B;
+}
+
+    .btn-default:hover, .button-bar a:hover {
+       
+    }
+
+.bid-box input[type=text], .bid-box select {
+    padding: 10px 15px;
+    border: 1px solid #222;
+    width: 220px;
+    font-weight: 700;
+}
+
+.bid-box select {
+    width: 300px;
+}
+
+.bid-box input[type=submit] {
+    margin-top: 20px;
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+.bid-form p {
+    margin: 5px 0;
+    font-size: 1.1em;
+}
+
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+
+/*
+ * Hide visually and from screen readers:
+ */
+
+.hidden {
+    display: none !important;
+}
+
+/*
+ * Hide only visually, but have it available for screen readers:
+ * http://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+ */
+
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+/*
+ * Extends the .visuallyhidden class to allow the element
+ * to be focusable when navigated to via the keyboard:
+ * https://www.drupal.org/node/897638
+ */
+
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
+}
+
+/*
+ * Hide visually and from screen readers, but maintain layout
+ */
+
+.invisible {
+    visibility: hidden;
+}
+
+/*
+ * Clearfix: contain floats
+ *
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    `contenteditable` attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that receive the `clearfix` class.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+/* ==========================================================================
+   EXAMPLE Media Queries for Responsive Design.
+   These examples override the primary ('mobile first') styles.
+   Modify as content requires.
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+    /* Style adjustments for viewports that meet the condition */
+}
+
+@media print,
+       (-webkit-min-device-pixel-ratio: 1.25),
+       (min-resolution: 1.25dppx),
+       (min-resolution: 120dpi) {
+    /* Style adjustments for high resolution devices */
+}
+
+/* ==========================================================================
+   Print styles.
+   Inlined to avoid the additional HTTP request:
+   http://www.phpied.com/delay-loading-your-print-css/
+   ========================================================================== */
+
+@media print {
+    *,
+    *:before,
+    *:after {
+        background: transparent !important;
+        color: #000 !important; /* Black prints faster:
+                                   http://www.sanbeiji.com/archives/953 */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+
+    /*
+     * Don't show links that are fragment identifiers,
+     * or use the `javascript:` pseudo protocol
+     */
+
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+
+    /*
+     * Printing Tables:
+     * http://css-discuss.incutio.com/wiki/Printing_Tables
+     */
+
+    thead {
+        display: table-header-group;
+    }
+
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+
+    img {
+        max-width: 100% !important;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}

@@ -14,6 +14,7 @@
 Route::get('/', 'UserPagesController@index');
 Route::get('bid', 'UserPagesController@bid');
 Route::post('bid', 'UserPagesController@place_bid');
+Route::post('change_project', 'UserPagesController@change_project');
 
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');

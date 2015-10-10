@@ -1,22 +1,24 @@
 @extends('user.base')
 
 @section('content')
-<img class="hero-img" src="{{ asset('img/banner.jpg') }}" alt="" style="margin-top: -30px;">
+@include('user.slider')
+<!-- <img class="hero-img" src="{{ asset('img/banner.jpg') }}" alt="" style="margin-top: -30px;"> -->
 
 <div class="content">
-    <h3 style="text-align: center; margin: 40px auto;">PROJECTS UNDER VALUE AUCTION</h3>
+    <h3 style="text-align: center; margin: 40px auto;font-weight:normal">READY TO MOVE IN PROJECTS UNDER VALUE AUCTION</h3>
     
     <div class="project-box">
         <div class="city-list">
             <ul>
                 
             </ul>
-        </div>    
-            
-        <div class="project-list">
-            <h3 class="pr-title">PROJECTS READY TO MOVE IN <span>BANGALORE</span></h3>
-            
-            <div class="project-accordion"></div>
+        </div>
+           
+       <div class="project-list">
+      
+                        
+            <div class="project-accordion"></div>     
+        
 
         </div>
 
@@ -46,8 +48,8 @@
                 @endif
 
                 <div class="left">
-                    <h3>Register for Auction</h3>
-                    <p style="margin: 0; font-size: 0.7em;">To know HDFC Reality&#39;s "Best Value Price" and obtain Bid Document</p>
+                    <h3 >Register for Auction</h3>
+                    <p style="margin: 0; font-size: 0.7em;">To Know HDFC Realty's Minimum Price2Bid & obtain Bid Documents</p>
                     <form method="POST" action="{{ url('auth/register') }}">
                         {!! csrf_field() !!}
                         <input id="reg_project_id" type="hidden" name="project_id" value="{{ old('project_id') }}">
@@ -116,13 +118,15 @@
 <!-- *********************** Templates *********************** -->
 <script type="text/template" id="project-template">
 <div class="project">
-    <div class="accordion-header">
+ <div class="accordion-header">
+      <p> </p>
         <h4><%=location%> - <%=city%> | <%=name%></h4>
         <div class="icons">
             <i class="fa fa-plus-circle"></i>
             <i class="fa fa-minus-circle"></i>
         </div>
     </div>
+   
     <div class="accordion-body clearfix">
         <div class="left">
             <img src="{{ asset('img/') }}/<%=image_url%>" alt="">
@@ -130,11 +134,14 @@
                 <p class="banner"><%=banner_text%></p>
             <% } %>-->
 
-            <div class="button-bar">
+            <div class="button-bar1">
                 <% if (video_url != "") { %>
-                <a href="<%=video_url%>" target="_blank"><i class="fa fa-play-circle-o"></i> Video</a>
-                <% } if (brochure_url != "") { %>
-                <a href="<%=brochure_url%>" target="_blank"><i class="fa fa-file-text-o"></i> Brochure</a>
+                <a href="<%=video_url%>" target="_blank">Watch Video</a>
+                <% }%>
+            </div>
+            <div class="button-bar1">
+                <%  if (brochure_url != "") { %>
+                <a href="<%=brochure_url%>" target="_blank">View E_Brochure</a>
                 <% } %>
             </div>
         </div>
@@ -146,17 +153,16 @@
             </div>
 
             <div class="price-field clearfix">
-                <p class="text">Base Price prevailing in the market for similar projects </p> <p class="value">: <%=market_base%></p>
+                <p class="text" style="width:330px">Base Price for similar projects in the market </p> <p >: <%=market_base%></p>
             </div>
             <div class="price-field clearfix">
-                <p class="text">Developers Base Price </p><p class="value">: <%=dev_base%></p>
+                <p class="text" style="width:330px">Developer&#39;s Current Base Price </p><p class="value">: <%=dev_base%></p>
             </div>
             <div class="price-field clearfix">
-                <p class="text">To Know HDFC Reality&#39;s "Best Value Price" </p><p class="value">: Register below</p>
-            </div>
-
+                <p class="text"style="width:330px">To know HDFC Realty’s Minimum Base Price2Bid  </p><p class="value">: Register for Auction</p>
+           </div>
             <div class="button-bar">
-                <a class="buy-coupon" data-project-id="<%=id%>" href="#" style="display: inline-block; margin: auto; text-align: center;"><i class="fa fa-tag"></i> Register Now</a>
+                <a class="buy-coupon" data-project-id="<%=id%>" href="#" ><i class="fa fa-tag"></i> Register For Auction</a>
             </div>
         </div>
     </div>
@@ -172,6 +178,12 @@
     var modal_to_show = <?php if(!empty(old('project_id'))) print "'modal-register'"; else print "'modal-login'"; ?>;
 
     $(document).ready(function() {
+        $('.banner').unslider({
+            speed: 500,               //  The speed to animate each slide (in milliseconds)
+            delay: 3000,              //  The delay between slide animations (in milliseconds)
+            dots: true,
+            fluid: true              //  Support responsive design. May break non-responsive designs
+        });
 
         render_cities();
 

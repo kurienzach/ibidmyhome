@@ -23,9 +23,10 @@ class UserPagesController extends Controller
         }
 
         $user = Auth::user();
+        $projects = Project::all();
 
         if ($user->payment_done) {
-            return view('user.bid', compact('user')); 
+            return view('user.bid', compact('user', 'projects')); 
         }
         else {
             return redirect('/payment'); 
@@ -38,8 +39,33 @@ class UserPagesController extends Controller
             return redirect('/');
         }
 
+        $projects = Project::all();
+
         $user = Auth::user();
-        return view('user.bid', compact('user'));
+        return view('user.bid', compact('user', 'projects'));
+    }
+
+    public function change_project(Request $request)
+    {
+        if (Project::findOrFail($request->get('project_id'))
+            && Auth::user()->project_id != $request->get('project_id')) {
+
+            $user = Auth::user();
+
+            // Delete current bid of the user if user has placed bid
+            $bid = $user->bid;
+
+            if ($bid) {
+                $user->bid_id = null;
+                $user->save();
+                $bid->delete();
+            }
+
+            $user->project_id = $request->get('project_id');
+            $user->save();
+        }
+
+        return redirect('/bid');
     }
 
     public function place_bid(Request $request)
