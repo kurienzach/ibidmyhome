@@ -97,6 +97,9 @@ textarea {
 html, body {
     font-family: 'Open Sans', sans-serif;
     font-size: 18px;
+    height: 100%;
+    min-height: 100%;
+    min-width: 975px;
 }
 
 .header{
@@ -106,6 +109,7 @@ html, body {
     width: 100%;
     background: white;
     z-index: 50;
+    min-width: 975px;
     border-bottom: 1px solid #dbdddf;
 }
 
@@ -119,7 +123,7 @@ html, body {
 
 .header-content .nav-bar {
     float: right;
-    margin-top: 30px;
+    margin-top: 40px;
 }
 
 .header-content a {
@@ -135,9 +139,13 @@ html, body {
 .logo{
 
 height: 120%;
-min-width: 300px;
 float: left;
 margin-top: -10px;
+}
+
+.logo a {
+    height: 100%;
+    margin: 0;
 }
 
 .logo img{
@@ -186,7 +194,7 @@ height: 100%;
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 20px;
+    bottom: -5px;
     margin: 0; padding: 0;
     text-align: center;
 }
@@ -213,20 +221,44 @@ height: 100%;
     opacity: 1;
 }
 
+.banner .how-it-works {
+    position: absolute;
+    bottom: 35px;
+    left: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.banner .how-it-works a {
+    display: inline-block;
+    margin: auto;
+    text-decoration: none;
+    color: #fff;
+    padding: 1% 1.5%;
+    background: rgba(0,0,0,0.6);
+    border: 2px solid #fff;
+    border-radius: 500px;
+    -webkit-transition: background .2s, opacity .2s;
+    -moz-transition: background .2s, opacity .2s;
+    transition: background .2s, opacity .2s;
+}
+
+.banner .how-it-works a:hover {
+    background: rgba(0,0,0,0.8);
+}
+
 .content {
     width: 976px;
     margin: auto;
+    min-height: 78%;
 }
 
 .project-box {
-    background: #efecdd;
+    background: #FFF;
 }
 
 .city-list {
-    background-color:;
-    border-bottom: 3px solid:#efecdd;
-    color: #00000;
-    height: 40px;
+    height: 50px;
 }
 
     .city-list h3 {
@@ -254,16 +286,27 @@ height: 100%;
                 display: block;
                 margin: 0;
                 padding: 0 25px;
-                color: #00000;
                 border-right: 1px solid #efecdd;
                 cursor: pointer;
                 text-decoration: none;
-                color: #000;
+                text-transform: uppercase;
+                font-size: 0.8em;
+                background: #1F4181;
+                color: #fff;
+            }
+
+            .city-list ul li a:hover {
+                background-color: #EC9722;
             }
 
                 .city-list ul li a.select {
-                    background-color: #DC903B;
+                    background-color: #EC9722;
                 }
+
+.project-accordion {
+    background: #EAECEB;
+    border-top: 2px solid #EAECEB;
+}
 
 .project-select {
     margin: 25px auto 10px;
@@ -288,10 +331,25 @@ height: 100%;
 
 .project-list {
     padding: 0 20px;
+    position: relative;
+}
+
+.float-customer-care {
+    font-size: 14px;
+    background: #030708;
+    color: #fff;
+    position: fixed;
+    top: 60%; left: 0px;
+    padding: 10px 15px;
+
+    transform: rotate(270deg);
+    transform-origin: left top 0;
 }
 
 .project {
-    
+    background: #fff;
+    border: 1px solid #EAECEB;
+    margin: 5px 0;
 }
 
 .project * {
@@ -325,7 +383,7 @@ height: 100%;
 }
 
 .project.expand .accordion-body {
-    max-height: 500px;
+    /*max-height: 500px;*/
 }
 
 .accordion-header .icons i {
@@ -339,8 +397,8 @@ height: 100%;
 
 .accordion-body {
     padding: 0 25px;
-    margin: 20px 0 0;
-    max-height: 0;
+    margin: 50px 0 0;
+    /*max-height: 0;*/
     overflow: hidden;
     transition: all .5s ease-out;
 }
@@ -352,29 +410,14 @@ height: 100%;
     margin: auto;
 }
 
-        .accordion-body .left .banner {
-            width: 100%;
-            text-align: center;
-            background: #ff6;
-            border: 1px solid #FFF;
-            font-size: .75em;
-            font-weight: 500;
-            padding: 4px 0;
-        }
-
-        .accordion-body .left .current-highest-bid {
-            text-align: center;
-            background: #746F52;
-            text-transform: uppercase;
-            color: #fff;
-            padding: 10px;
-            font-size: .8em;
-        }
-
-.accordion-body .left .current-highest-bid p {
-    font-size: 1.3em;
+.accordion-body .left .banner {
+    width: 100%;
+    text-align: center;
+    background: #ff6;
+    border: 1px solid #FFF;
+    font-size: .75em;
     font-weight: 500;
-    margin: 10px 0;
+    padding: 4px 0;
 }
 
 .accordion-body .right {
@@ -385,16 +428,40 @@ height: 100%;
     font-size: 0.75em;
 }
 
-        .accordion-body .right .price-field {
-            background: #efecdd;
-            border: 1px solid #222;
-            padding: 12px;
-            margin-bottom: 10px;
-            color: #222;
-        }
+.accordion-body .right h4 {
+    background: #EBECEE;
+    font-size: 1.2em;
+    margin-top: 0;
+    margin-bottom: 30px;
+    padding: 10px 15px;
+}
+
+.accordion-body .right .project-desc {
+    margin: 20px 0;
+}
+
+.accordion-body .right .project-desc ul {
+    padding: 0 20px;  
+    color: #333;
+}
+.accordion-body .right .project-desc li {
+    list-style-type: square;
+}
+
+.accordion-body .right .price-field {
+    /*background: #efecdd;*/
+    /*border: 1px solid #222;*/
+    padding: 12px;
+    margin-bottom: 10px;
+    color: #222;
+    -webkit-box-shadow: 1px 1px 1px 0px rgba(100, 100, 100, 0.50);
+       -moz-box-shadow: 1px 1px 1px 0px rgba(100, 100, 100, 0.50);
+            box-shadow: 1px 1px 1px 0px rgba(100, 100, 100, 0.50);
+}
 
 .accordion-body .right .price-field p{
     margin: 0;
+    font-weight: 700;
 }
 
 .accordion-body .right .price-field p.text{
@@ -408,23 +475,24 @@ height: 100%;
     float: left;
 }
 
-            .accordion-body .right .price-field.highlight {
-                border: 1px solid #E31E27;
-                color: #222;
-            }
+.accordion-body .right .price-field.highlight {
+    border: 1px solid #E31E27;
+    color: #222;
+}
 
 
 .button-bar {
-    text-align: center;
+    /*text-align: center;*/
     margin: 25px auto 35px;
 }
 .button-bar a {
-     background: #DC903B;
-        display: inline-block;
-        padding: 10px 15px;
-        color: #fff;
-        border-radius: 2px;
-        font-size: 15px;
+    background: #1F4181;
+    display: inline-block;
+    padding: 10px 15px;
+    color: #fff;
+    border-radius: 2px;
+    font-size: 15px;
+    text-decoration: none;
 }
 
 
@@ -432,31 +500,139 @@ height: 100%;
     text-align: center;
     margin: 20px auto 20px;
     font-size: 15px;
-    font-color: #00000;
+    font-color: #000;
 }
 .button-bar1 a {
-    display: inline-block;
-    padding: 7px,10px;
-    color: #00000;
+    display: block;
+    padding: 7px 10px;
     border-radius: 2px;
     font-size: 15px;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #1F4181;
+    margin-bottom: 8px;
 }
 
 .button-bar a i{
     margin-right: 5px;
 }
 
+/* Bid box stylings */
+.bid-box * {
+    box-sizing: border-box;
+}
+
+.bid-box {
+    background: #fff;
+    border: 1px solid #EAECEB;
+    margin: 5px 0;
+}
+
+.bid-box input[type=text], .bid-box select {
+    padding: 10px 10px;
+    border: 1px solid #222;
+    width: 270px;
+    /*font-weight: 700;*/
+    font-size: 0.9em;
+}
+
+.bid-box select {
+    width: 400px;
+    background: #fff;
+}
+
+.bid-box input[type=submit] {
+    /*background: #1F4181;*/
+    margin-top: 20px;
+    margin-left: 20%;   
+    /*font-weight: 700;*/
+    /*font-size: 1.2em;*/
+}
+
+.bid-box input[type=radio] {
+    display: inline-block;
+}
+
+.bid-box .left,
+.bid-box .right{
+    float: left;
+    padding: 10px 25px;
+    padding-left: 40px;
+}
+
+.bid-box .left {
+    width: 35%;
+}
+
+.bid-box .left .current-bid {
+    margin-bottom: 20px;
+    font-size: 0.85em;
+}
+
+.bid-box .left .current-bid .text {
+    float: left;
+    width: 40%;
+}
+
+.bid-box .left .current-bid .value {
+    float: left;
+    width: 60%;
+}
+
+.bid-box .right {
+    width: 62%;
+    border-left: 5px solid #EAECEB;
+}
+
+.bid-box .right .form-group {
+    font-size: 0.85em;
+    margin-bottom: 15px;
+}
+
+.bid-box .right .form-group .text {
+    float: left;
+    width: 20%;
+    line-height: 40px;
+}
+
+.bid-box .right .form-group .value {
+    float: left;
+    width: 75%;
+}
+
+.bid-box .right .form-group p {
+    display: inline-block;
+    margin: 0;
+}
+
+
 .footer {
+    /*margin-top: 80px;*/
     text-align: right;
     font-size: .75em;
     padding-top: 20px;
     padding-bottom: 20px;
+    background: #061A35;
 }
 
     .footer div {
         text-align: center;
-        height: 90px;
-        line-height: 90px;
+        height: 40px;
+        line-height: 40px;
+        color: #989898;
+    }
+
+    .footer div a {
+        color: #989898;;
+    }
+
+    .footer .social {
+        margin-top: 15px;
+        margin-bottom: 0;
+    }
+
+    .footer .social i {
+        margin: 0 5px;
     }
 
 .footer img {
@@ -494,34 +670,39 @@ height: 100%;
     font-size: .79em;
     
     color: #fff;
-    background: #DC903B;
+    /*background: #DC903B;*/
+    background: #1F4181;
+    text-decoration: none;
 }
 
-    .btn-default:hover, .button-bar a:hover {
-       
-    }
-
-.bid-box input[type=text], .bid-box select {
-    padding: 10px 15px;
-    border: 1px solid #222;
-    width: 220px;
-    font-weight: 700;
+.btn-default:hover, .button-bar a:hover {
+   background: #2E5296;
 }
 
-.bid-box select {
-    width: 300px;
+.vid-wrapper {
+    position: absolute;
+    top: 3.5%;
+    left: 34%;
+    width: 30%;
+    border: 10px solid #fff;
 }
 
-.bid-box input[type=submit] {
-    margin-top: 20px;
-    font-weight: 700;
-    font-size: 1.2em;
+.video {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    padding-top: 25px;
+    height: 0;
+}
+.video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
-.bid-form p {
-    margin: 5px 0;
-    font-size: 1.1em;
-}
+
+
 
 /* ==========================================================================
    Helper classes

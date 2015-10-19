@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-
+<h3 style="text-align: center; margin: 40px auto;font-weight:normal" id="ready-to-occupt">COMPLETE YOUR REGISTRATION BY PAYING RS 549</h3>
 <div class="online_booking_form_container">
     <div class="full_width_content">
 
@@ -41,11 +41,32 @@
 
                             <select class="filed_select" data-val="true" data-val-required="*" style="width:100%" id="ProjectID" name="project_id">
                                 @foreach($projects as $project)
-                                <option value="{{ $project->id }}">{{ $project->name }}</option>
+                                <option value="{{ $project->id }}">{{ $project->location }}, {{ $project->city }} | {{ $project->name }}</option>
                                 @endforeach
                             </select>
                         </div>
+                        <div class="fl_left padr10" style="width:100%">
+                            
+                            <select class="filed_select" style="width:100%" id="heard_src" name="heard_src">
+                                <option disabled selected>You heard about us from</option>
+                                <option value="Referrels">Referrels</option>
+                                <option value="Real Estate agent">Real Estate agent</option>
+                            </select>
+                        </div>
+                        <div class="frm_fields padbt10 heard_div" style="display:none">
+                            <div class="fl_left padr10">
+                                
+                                <input class="input_style" id="heard_field1" maxlength="100" name="heard_field1" placeholder="Name" type="text" value="">
+                            </div>
+                            <div class="fl_left">
+                                
+                                <input class="input_style" id="heard_field2" maxlength="100" name="heard_field2" placeholder="Mobile No" type="text" value="">
+                            </div>
+                            <div style="clear: both;">
+                            </div>
+                        </div>
                     </div>
+
 
                     <h2 class="frm_heading">
                 Personal Information</h2>
@@ -137,10 +158,9 @@
             </form>
     </div>
 </div>
-
-<div class="footer clearfix">
-          <div>© COPYRIGHT 2015. IBIDMYHOME.COM. CUSTOMER CARE: 080 444 555</div>
 </div>
+<div style="height: 80px;"></div>
+@include('user.footer');
 @stop
 
 @section('scripts')
@@ -150,6 +170,15 @@
 <script src="{{ url('js/jquery.validate.unobtrusive.min.js')}}" type="text/javascript"></script>
 <script type="text/javascript">
     var projectId = "";
+
+    $('#heard_src').change(function() {
+        if ($(this).val() == "Referrels")
+            $('.heard_div #heard_field1').attr('placeholder', 'Name');
+        else
+            $('.heard_div #heard_field1').attr('placeholder', 'Real Estate Agent Organization');
+        $('.heard_div').show();
+    });
+
     jQuery(document).ready(function () {
         $('#ProjectID').val({{ $user->project_id }});
         jQuery('.frmOnline').submit(function (event) {

@@ -22,6 +22,9 @@ class CreateTableBids extends Migration
             $table->foreign('unit_id')
                   ->references('id')->on('project_units');
 
+            $table->tinyInteger('higher_floor')->default(0);
+            $table->tinyInteger('premium_view')->default(0);
+
             $table->timestamps();
         });
     }

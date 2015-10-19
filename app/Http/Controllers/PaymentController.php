@@ -24,11 +24,11 @@ class PaymentController extends Controller
      * @return Response
      */
 
-    private function sendSmS($phoneno, $amount, $flat_id, $project){
+    private function sendSmS($phoneno, $user, $flat_id, $project){
         $sp_url     = "";
         $response   = "";
-        $smsTxt = "We have received your payment of Rs. ".$amount.". One of our Relationship managers will get in touch with you shortly. Alternatively, you can reach us at 080 4455 5555";
-        $sp_url = "http://trans.smscuppa.com/sendsms.jsp?user=purvnkra&password=purvnkra&mobiles=". $phoneno ."&sms=". urlencode($smsTxt) ."&senderid=PURVAA&version=3";
+        $smsTxt = "Dear " . $user . ", Thank you for registering with www.ibidmyhome.com. You may now place your bid either online or by getting in touch with one of the HDFC Realty relationship managers at 022-67221919.";
+        $sp_url = "http://trans.smscuppa.com/sendsms.jsp?user=mybids&password=mybids&mobiles=". $phoneno ."&sms=". urlencode($smsTxt) ."&senderid=MYBIDS&version=3";
         
         if($sp_url != ""){
             //echo $sp_url;
@@ -74,7 +74,7 @@ class PaymentController extends Controller
     	
         $user = Auth::user();
         if ($user->payment_done)
-            return redirect('/');
+            return redirect('/bid');
 
         $projects = Project::all();
         return view('user.payment', compact('user', 'projects'));
@@ -106,11 +106,11 @@ class PaymentController extends Controller
             return redirect()->back()->withInput()->withErrors(['msg' => 'Please accept the terms and conditions']); 
         }
 
-
         // Validations
         $validator = Validator::make(
             $request->all(),
             array(
+                'project_id' => 'required',
                 'CustName' => 'required',
                 'CustPan' => 'required',
                 'cust_mail' => 'required|email',
@@ -135,6 +135,9 @@ class PaymentController extends Controller
         $user->save();
 
         // Fill in customer details
+        $booking->heard_src = $request->get('heard_src');
+        $booking->heard_field1 = $request->get('heard_field1');
+        $booking->heard_field2 = $request->get('heard_field2');
         $booking->user_id = $user->id;
         $booking->cust_name = $request->get('cust_name');
         $booking->cust_mail = $request->get('cust_mail');
@@ -235,7 +238,7 @@ class PaymentController extends Controller
 
             $booking->save();
 
-            $this->sendSmS($booking->cust_mobile, $booking->amount, $booking->project->name, 'IBIDMYHOME');
+            $this->sendSmS($booking->cust_mobile, $booking->cust_name, $booking->project->name, 'IBIDMYHOME');
 
             // Send email to customer
             Mail::send('mails.booking_success', ['booking' => $booking], function($m) use ($booking){
@@ -244,7 +247,8 @@ class PaymentController extends Controller
             });
             // Send email to admin
             Mail::send('mails.new_booking', ['booking' => $booking], function($m) use ($booking) {
-                $m->to('info@ibidmyhome.com', 'IBidMyHome');
+                $m->to('nitin.verma@providenthousing.com', 'IBidMyHome');
+                $m->cc('anamika.choudhary@puravankara.com', 'IBidMyHome');
                 $m->subject('New Payment received' . $booking->project->name);
             });
             

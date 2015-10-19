@@ -24,6 +24,10 @@
                     <input class="form-control" name="min_bid_value" value="{{ $unit->min_bid_value }}">
                 </div>
                 <div class="form-group">
+                    <label>Maximum Bid Value</label>
+                    <input class="form-control" name="max_bid_value" value="{{ $unit->max_bid_value }}">
+                </div>
+                <div class="form-group">
                     <input class="btn btn-success" type="submit" value="Save Unit">
                 </div>
             </form>

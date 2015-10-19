@@ -96,6 +96,7 @@ class AdminController extends Controller
 
         $unit->highest_bid = $request->get('highest_bid');
         $unit->min_bid_value = $request->get('min_bid_value');
+        $unit->max_bid_value = $request->get('max_bid_value');
         $unit->save();
         return redirect('/admin/projects');
     }

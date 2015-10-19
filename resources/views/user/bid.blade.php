@@ -3,130 +3,113 @@
 @section('head')
 @parent
 <link href="{{ asset('/css/sweetalert.css') }}" rel="stylesheet">
+<link href="{{ asset('/css/minimal/minimal.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
+@include('user.slider-half')
 <div class="content">
     <div class="project-box">
-        <div class="city-list" class="clearfix">
-            @if ($user->bid()->first() != null)
-            <h3>My Bid for {{ $user->project->name }} for Base Price - Rs {{ $user->bid->bid_value }} psqft + Other Charges</h3>
-            @else
-            <h3>My Bid for {{ $user->project->name }}</h3>
-            @endif
-        </div>    
+
+        <div style="height: 40px"></div>
 
         <div class="city-list">
         	<ul class="clearfix">
         		<li><a class="select" href="#">My Bid</a></li>
-        		<li><a href="{{ asset('doc1.pdf') }}">Link 1</a></li>
-        		<li><a href="{{ asset('doc1.pdf') }}">Link 2</a></li>
-        		<li><a href="{{ asset('doc1.pdf') }}">Link 3</a></li>
+        		<li><a href="{{ asset('/docs/sample.pdf') }}" target="_blank">View Bid Document</a></li>
+        		<li><a href="{{ asset('/docs/sample.pdf') }}" target="_blank">View Homes on Auction</a></li>
+        		<li><a href="{{ asset('/docs/sample.pdf') }}" target="_blank">View Auction Statistics</a></li>
         	</ul>
         </div>
 
-        <div class="project-select">
-        	<form class="form-inline" action="{{ url('/change_project') }}" method="POST">
-	        	{!! csrf_field() !!}
-        	    <p>Selected Project</p>
-        	    <select class="filed_select" data-val="true" data-val-required="*" style="width:50%; margin-left: 15px;" id="ProjectID" name="project_id">
-        	        @foreach($projects as $project)
-        	        <option value="{{ $project->id }}">{{ $project->location }} - {{ $project->city }} | {{ $project->name }}</option>
-        	        @endforeach
-        	    </select>
-        	  <input type="submit" class="btn btn-default" style="margin-left: 15px;" value="Change">
-        	</form>
-        </div>
-            
         <div class="project-list">
-            <br>
+            <div class="float-customer-care">
+                Customer Support : 022-67221919
+            </div>
             <div class="project-accordion">
                 <?php $project = $user->project; ?>
-                <div class="project expand">
-                    <div class="accordion-header">
-                        <h4>{{ $project->location }} - {{ $project->city }} | {{ $project->name }}</h4>
-                        
-                    </div>
-                    <div class="accordion-body clearfix">
-                        <div class="left">
-                            <img src="{{ asset('img/' . $project->image_url) }}" alt="">
-                            <div class="button-bar1" style="text-align: center;">
-                                @if ($project->video_url != "")
-                                <a href="{{ $project->video_url }}">Watch Video</a>
-                                @endif
-<br><br>
-                                @if ($project->brochure_url != "")
-                                <a href="{{ $project->brochure_url }}">View E_Brochure</a>
-                                @endif
-                            </div>
+
+                <div class="bid-box clearfix">
+                    <div class="left">
+                        <h3>My Bid</h3>
+                        <div class="current-bid clearfix">
+                            <div class="text">Project</div>
+                            <div class="value">: {{ $user->project->name }}</div>
                         </div>
-
-                        <div class="right">
-                            <div class="project-desc">
-                                <strong style="text-transform: uppercase;">{{ $project->name }}</strong><br>
-                                {!! $project->description !!}
-                            </div>
-
-                            <div class="price-field clearfix" >
-                                <p class="text" style="width:320px">Base Price for similar projects in the market</p> <p class="value">: {{ $project->market_base }}</p>
-                            </div>
-                            <div class="price-field clearfix">
-                                <p class="text" style="width:320px">Developer's Current Base Price</p> <p class="value">: {{ $project->dev_base }}</p>
-                            </div>
-                            <div class="price-field highlight clearfix">
-                                <p class="text" style="width:320px">HDFC Realty's Minimum Base Price2Bid</p> <p class="value">: {{ $project->hdfc_base }}</p>
-                            </div>
+                        <div class="current-bid clearfix">
+                            <div class="text">Location</div>
+                            <div class="value">: {{ $user->project->location }}</div>
+                        </div>
+                        <div class="current-bid clearfix">
+                            <div class="text">Unit Type</div>
+                            @if($user->bid != null)
+                            <div class="value">: {{ $user->bid->project_unit->unit_type }} ({{ $user->bid->project_unit->area }})</div>
+                            @else
+                            <div class="value">: </div>
+                            @endif
+                        </div>
+                        <div class="current-bid clearfix">
+                            <div class="text">Bid Amount</div>
+                            @if($user->bid != null)
+                            <div class="value">: Rs {{ $user->bid->bid_value }} per sqft + Other Charges</div>
+                            @else
+                            <div class="value">: </div>
+                            @endif
                         </div>
                     </div>
-                    
-                    <div class="accordion-body bid-box clearfix">
-                        <div class="left">
-                            <p style="width:400px"></p>
-                        </div>
 
-                        <div class="right">
-                            <select id="unit_select" name="unit_type">
-                                <option disabled selected>Select Unit Type</option>
-                                @foreach($user->project->project_units as $unit)
-                                <option value="{{ $unit->id }}">{{ $unit->unit_type }} ({{ $unit->area }} sqft)</option>
-                                @endforeach
+                    <div class="right">
+                        <form action="{{ url('/bid') }}" class="unit_details" method="post">
+                        {!! csrf_field() !!}
+                        <h3>Place / Modify Your Bid</h3>
+                        <div class="form-group clearfix">
+                            <div class="text">Project</div>
+                            <div class="value">
+                                <select name="project_id" id="project_select">
+                                    @foreach($projects as $project)
+                                    <option value="{{ $project->id }}">{{ $project->location }}, {{ $project->city }} | {{ $project->name }}
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <div class="text">Unit Type</div>
+                            <select name="unit_id" id="unit_select">
+                                <option disabled>Select a Project</option>
                             </select>
-                            <br/><br/>
-                       <div><p>
-                      <a href="{{ asset('bidding_doc.pdf') }}">Before placing your bids Click here to understand about Other Charges </a>
-			</p>
-			</div>
+                        </div>
 
-                            <div class="unit_details" style="display:none; padding-top: 20px; ">
-                                <form method="POST" action="{{ url('bid') }}" class="bid-form">
-                                    {!! csrf_field() !!}
-                                    
-                                    <input type="hidden" class="unit_id" name="unit_id" value="">
-                                    <small style="" class="min_bid_error">Minimum Bid Amount is Rs. <span></span></small><br>
-                                    <input class="bid_value" type="text" name="bid_value" placeholder="my bid value" style="margin-bottom: 15px;"> <label style="margin-left: 10px; font-weight: 700;">psqft</label>
+                        <div>
+                        <div class="form-group clearfix" style="margin: 30px 0;">
+                            <p style="width: 395px;">Would you prefer a Higher floor apartment</p>
+                            <input type="radio" name="higher_floor" value="yes">&nbspYes&nbsp&nbsp
+                            <input type="radio" name="higher_floor" value="no">&nbspNo
+                        </div>
+                        <div class="form-group clearfix" style="margin: 30px 0;">
+                            <p style="width: 395px;">Would you prefer an apartment with premium view</p>
+                            <input type="radio" name="premium_view" value="yes">&nbspYes&nbsp&nbsp
+                            <input type="radio" name="premium_view" value="no">&nbspNo
+                        </div>
+                        </div>
 
-                                    <div style="display:none">
-                                    <p class="other_charges">Other Govt. Charges : Rs <span></span></p>
-                                    <p class="stat_charges">Statutory Charges : Rs <span></span></p>
-                                    <p class="bid_total" style="font-weight: 700;">TOTAL : Rs <span>0</span></p>
-                                    </div>
-                                    
-                                    @if ($user->bid != null)
-                                    <input class="btn-default" style="displaY: block;margin-bottom: 15px;" type="submit" value="Modify">
-                                    @else
-                                    <input class="btn-default" style="displaY: block;margin-bottom: 15px;" type="submit" value="Submit">
-                                    @endif
-
-                                    <p style="color: #565656; font-size: 0.9em; margin-top: 30px;">Disclaimer: All prices are indicative based on unit type, exact prices will be based on final unit selection later.</p>
-                                </form>
+                        <div class="form-group clearfix">
+                            <div class="text">My Bid</div>
+                            <div class="value">
+                                <input type="text" name="bid_value" placeholder="Bid Value" class="bid_value">
+                                <p style="margin-left: 10px;">per sq ft</p>
                             </div>
                         </div>
+                        
+                        @if ($user->bid == null)
+                        <input class="btn btn-default" type="submit" value="SUBMIT">
+                        @else
+                        <input class="btn btn-default" type="submit" value="MODIFY">
+                        @endif
+
+                        <p style="margin-left: 20%;"><a href="{{ asset('/docs/sample.pdf') }}" target="_blank" style="font-size: 0.7em; text-decoration: none; color: #1F4181;">Before placing your bid, Click here to understand about other charges</a></p>
+                        </form>
                     </div>
-
-                    <div style="height: 50px;"></div>
-
                 </div>
-
 
             </div>
             <!-- .project-accordion -->
@@ -137,70 +120,102 @@
     </div>
     <!--.project-box-->
 
-    @include('user.footer')
-
 </div>
+<div style="height: 80px;"></div>
+@include('user.footer')
+
 @endsection       
       
 @section('scripts')
 @parent
 <script src="{{ asset('/js/sweetalert.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/js/vendor/icheck.min.js') }}" type="text/javascript"></script>
 
 <script>
-    $('#ProjectID').val({{ $user->project_id }});
-
-    var project_units = {!! $user->project->project_units !!};
-
+    var project_units = {!! $units !!};
     var selected_unit = null;
+
+    // On selection of project populate the unit select
+    $("#project_select").change(function() {
+        $unit_select = $('#unit_select');
+        $unit_select.empty();
+        project = project_units[$(this).val()];
+
+        $unit_select.append('<option selected disabled>Select Unit</option>')
+        _.each(project, function(unit){
+            $unit_select.append('<option value="' + unit['id'] + '">' + unit['unit_type'] + ' (' + unit['area'] + ')</option>')
+        });
+    });
+
+    // On selection of a unit type store details of unit in selected_unit for future use / validation
     $('#unit_select').change(function() {
-        unit = _.findWhere(project_units, {'id': $(this).val()});
-        $unit_details = $('.unit_details');
-        $unit_details.find('.unit_id').val(unit['id']);
-        $('.current-highest-bid').html(unit['highest_bid']);
-        $unit_details.find('.min_bid_error span').html(unit['min_bid_value']);
-        $unit_details.find('.other_charges span').html(unit['govt_charges']);
-        $unit_details.find('.stat_charges span').html(unit['other_charges']);
-        selected_unit = unit;
-        $unit_details.show();
-        // $unit_details.find('.bid_value').focus();
-        $unit_details.find('.bid_value').keyup();
+        selected_unit = _.findWhere(project_units[$('#project_select').val()], {id: $(this).val()});
+        $('.bid_value').attr('placeholder', "HDFC Reality's Min Base Price Rs " + selected_unit['min_bid_value']);
     });
 
-    $('.bid_value').keyup(function() {
-        bid = Number.parseInt($(this).val());
-        if (!isNaN(bid)) {
-            if (bid >= selected_unit['min_bid_value']) {
-                bid_total_price = bid * unit['area'] + Number.parseInt(unit['other_charges']) + Number.parseInt(unit['govt_charges'])
-                // $('.unit_details .min_bid_error').hide();
-                $('.bid_total span').html(bid_total_price);
-            }
-            else {
-                $('.bid_total span').html('0');
-                // $('.unit_details .min_bid_error').show();
-            }
+    $('form.unit_details').submit(function() {
+        // Validations before form submit
+        console.log
+        // Check if a valid unit is selected
+        if ($('#unit_select').val() == null) {
+            swal('', 'Please select Unit Type and Enter bid balue to place bid');
+            return false;
         }
-        else {
-            $('.bid_total span').html('0');   
-            // $('.unit_details .min_bid_error').hide();
-        }
-    });
 
-    $('.unit_details form').submit(function() {
         bid = Number.parseInt($('.bid_value').val());
-        if (isNaN(bid) || bid < selected_unit['min_bid_value']) {
+        if (isNaN(bid)) {
+            swal({   title: '',   text: 'Invalid Bid Value' , confirmButtonColor: '#1F4181'});
+            return false;
+        }
+        else if (bid < selected_unit['min_bid_value']) {
+            swal({   title: '',   text: 'Oops! Your bid is below the HDFC Realty’s Minimum Base Price2bid of Rs ' + selected_unit['min_bid_value'] + '. Please re-bid with a higher amount.' , confirmButtonColor: '#1F4181'});
+            return false;
+        }
+        else if (bid > selected_unit['max_bid_value']) {
+            swal({   title: '',   text: 'Oops! Your bid is above the Developer’s base price of ' + selected_unit['max_bid_value'] + '. Please re-bid with a lower amount.' , confirmButtonColor: '#1F4181'});
             return false;
         }
     });
 
 
     $(document).ready(function() {
+        $('.banner').unslider({
+            speed: 500,               //  The speed to animate each slide (in milliseconds)
+            delay: 5000,              //  The delay between slide animations (in milliseconds)
+            dots: true,
+            fluid: true              //  Support responsive design. May break non-responsive designs
+        });
+
+        $('input:radio').iCheck({
+           checkboxClass: 'icheckbox_minimal',
+           radioClass: 'iradio_minimal',
+           increaseArea: '20%' // optional
+         });
+
+        $('#project_select').val({{ $user->project_id }});
+        // Trigger a project select change to render inital value for unit select
+        $('#project_select').change();
+
         @if ($user->bid()->first() != null)
             $('#unit_select').val({{ $user->bid()->first()->unit_id }});
-            $('.unit_details').find('.bid_value').val({{ $user->bid()->first()->bid_value }})
             $('#unit_select').change();
-            $('.unit_details').find('.bid_value').keyup();
+            $('.unit_details').find('.bid_value').val({{ $user->bid()->first()->bid_value }})
+
+            @if ($user->bid->higher_floor == 1)
+                $('input[name="higher_floor"][value="yes"]').iCheck('check');
+            @elseif ($user->bid->higher_floor == -1)
+                $('input[name="higher_floor"][value="no"]').iCheck('check');
+            @endif
+
+            @if ($user->bid->premium_view == 1)
+                $('input[name="premium_view"][value="yes"]').iCheck('check');
+            @elseif ($user->bid->premium_view == -1)
+                $('input[name="premium_view"][value="no"]').iCheck('check');
+            @endif
+
         @endif
 
+        // Code to show modal window if msg set from the server
         @if (Session::has('alert'))
             @if (Session::has('alert-title'))
                 swal({   title: '{{ Session::get('alert-title') }}',   text: '{{ Session::get('alert') }}' , confirmButtonColor: '#DC903B'});

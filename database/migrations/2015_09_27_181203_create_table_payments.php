@@ -21,6 +21,10 @@ class CreateTablePayments extends Migration
             $table->foreign('project_id')
                   ->references('id')->on('projects');
 
+            $table->string('heard_src', 100)->nullable();
+            $table->string('heard_field1', 100)->nullable();
+            $table->string('heard_field2', 100)->nullable();
+
             // Customer Related
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')

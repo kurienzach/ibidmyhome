@@ -27,6 +27,7 @@ class CreateTableProjectunits extends Migration
             $table->integer('govt_charges');
 
             $table->integer('min_bid_value');
+            $table->integer('max_bid_value');
 
             $table->string('highest_bid');
 

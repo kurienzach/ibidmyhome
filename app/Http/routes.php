@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'UserPagesController@index');
+Route::get('/pages/{page}', 'UserPagesController@pages');
 Route::get('bid', 'UserPagesController@bid');
 Route::post('bid', 'UserPagesController@place_bid');
 Route::post('change_project', 'UserPagesController@change_project');
@@ -28,6 +29,8 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 Route::get('/payment', 'PaymentController@show_payment');
 Route::post('/payment/process', 'PaymentController@payment_process');
 Route::post('/payment/gateway', 'PaymentController@gateway');
+
+// Admin routers
 
 Route::get('admin', 'AdminController@index');
 
