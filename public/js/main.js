@@ -1,7 +1,7 @@
 function render_cities () {
 	$city_list = $('.city-list ul');
 	_.each(projects, function(project, city) {
-		$city_list.append("<li><a>" + city + "</a></li>");
+		$city_list.append("<li><a id='city-" + city + "'>" + city + "</a></li>");
 	});
 
 	$city_list.find('a').click(function() {
@@ -44,7 +44,7 @@ function render_projects (city) {
 	// $projects.first().addClass('expand');
 
 	$projects.find('.buy-coupon').click(function() {
-		show_modal(true, 'modal-register', 475, $(this).data('project-id'));
+		show_modal(true, 'modal-register', 560, $(this).data('project-id'));
 		return false;
 	});
 }

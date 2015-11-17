@@ -2,7 +2,7 @@
 
 @section('head')
 @parent
-<link href="{{ asset('/css/sweetalert.css') }}" rel="stylesheet">
+<title>My Bid - IBidMyHome</title>
 <link href="{{ asset('/css/minimal/minimal.css') }}" rel="stylesheet">
 @endsection
 
@@ -16,15 +16,15 @@
         <div class="city-list">
         	<ul class="clearfix">
         		<li><a class="select" href="#">My Bid</a></li>
-        		<li><a href="{{ asset('/docs/sample.pdf') }}" target="_blank">View Bid Document</a></li>
-        		<li><a href="{{ asset('/docs/sample.pdf') }}" target="_blank">View Homes on Auction</a></li>
-        		<li><a href="{{ asset('/docs/sample.pdf') }}" target="_blank">View Auction Statistics</a></li>
+        		<li><a href="{{ asset('/docs/Bid Document.pdf') }}" target="_blank">View Bid Document</a></li>
+        		<li><a href="{{ asset('/docs/Homes 2 bid for.pdf') }}" target="_blank">View Homes on Auction</a></li>
+        		<li><a href="{{ url('/pages/stats') }}" target="_blank">View Auction Statistics</a></li>
         	</ul>
         </div>
 
         <div class="project-list">
             <div class="float-customer-care">
-                Customer Support : 022-67221919
+                <img src="{{ asset('img/contact.png') }}">
             </div>
             <div class="project-accordion">
                 <?php $project = $user->project; ?>
@@ -43,7 +43,7 @@
                         <div class="current-bid clearfix">
                             <div class="text">Unit Type</div>
                             @if($user->bid != null)
-                            <div class="value">: {{ $user->bid->project_unit->unit_type }} ({{ $user->bid->project_unit->area }})</div>
+                            <div class="value">: {{ $user->bid->project_unit->unit_type }} ({{ $user->bid->project_unit->area }} )</div>
                             @else
                             <div class="value">: </div>
                             @endif
@@ -106,7 +106,7 @@
                         <input class="btn btn-default" type="submit" value="MODIFY">
                         @endif
 
-                        <p style="margin-left: 20%;"><a href="{{ asset('/docs/sample.pdf') }}" target="_blank" style="font-size: 0.7em; text-decoration: none; color: #1F4181;">Before placing your bid, Click here to understand about other charges</a></p>
+                        <p style="margin-left: 20%;"><a href="{{ asset('/docs/Pricing break up.pdf') }}" target="_blank" style="font-size: 0.7em; text-decoration: none; color: #1F4181;">Before placing your bid, Click here to understand about other charges</a></p>
                         </form>
                     </div>
                 </div>
@@ -119,6 +119,7 @@
         <br>
     </div>
     <!--.project-box-->
+<p><a style="font-size: 0.7em; text-decoration: none; color: #1F4181;">Please note that you can modify your project or bid or both at any point-in-time and any number of times. However, only one bid is permitted for every registration and only the last chosen project and bid will be considered for the Value Auction.</a></p>
 
 </div>
 <div style="height: 80px;"></div>
@@ -128,7 +129,6 @@
       
 @section('scripts')
 @parent
-<script src="{{ asset('/js/sweetalert.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/vendor/icheck.min.js') }}" type="text/javascript"></script>
 
 <script>
@@ -140,6 +140,8 @@
         $unit_select = $('#unit_select');
         $unit_select.empty();
         project = project_units[$(this).val()];
+        $('.bid_value').attr('placeholder', "Bid Value");
+        $('.bid_value').val('');
 
         $unit_select.append('<option selected disabled>Select Unit</option>')
         _.each(project, function(unit){
@@ -149,8 +151,9 @@
 
     // On selection of a unit type store details of unit in selected_unit for future use / validation
     $('#unit_select').change(function() {
-        selected_unit = _.findWhere(project_units[$('#project_select').val()], {id: $(this).val()});
+        selected_unit = _.findWhere(project_units[$('#project_select').val()], {id: parseInt($(this).val())});
         $('.bid_value').attr('placeholder', "HDFC Reality's Min Base Price Rs " + selected_unit['min_bid_value']);
+        $('.bid_value').val('');
     });
 
     $('form.unit_details').submit(function() {
@@ -158,33 +161,33 @@
         console.log
         // Check if a valid unit is selected
         if ($('#unit_select').val() == null) {
-            swal('', 'Please select Unit Type and Enter bid balue to place bid');
+            swal('', 'Please select Unit Type and Enter bid value to place bid');
             return false;
         }
 
-        bid = Number.parseInt($('.bid_value').val());
+        bid = parseInt($('.bid_value').val());
         if (isNaN(bid)) {
             swal({   title: '',   text: 'Invalid Bid Value' , confirmButtonColor: '#1F4181'});
             return false;
         }
         else if (bid < selected_unit['min_bid_value']) {
-            swal({   title: '',   text: 'Oops! Your bid is below the HDFC Realty’s Minimum Base Price2bid of Rs ' + selected_unit['min_bid_value'] + '. Please re-bid with a higher amount.' , confirmButtonColor: '#1F4181'});
+            swal({   title: '',   text: 'Oops! Your bid is below the HDFC Realty’s Minimum Base Price to bid of Rs ' + selected_unit['min_bid_value']  + ' per sqft. Please re-bid with a higher amount.' , confirmButtonColor: '#1F4181'});
             return false;
         }
         else if (bid > selected_unit['max_bid_value']) {
-            swal({   title: '',   text: 'Oops! Your bid is above the Developer’s base price of ' + selected_unit['max_bid_value'] + '. Please re-bid with a lower amount.' , confirmButtonColor: '#1F4181'});
+            swal({   title: '',   text: 'Oops! Your bid is above the Developer’s Current base price of Rs ' + selected_unit['max_bid_value']  + ' per sqft. Please re-bid with a lower amount.' , confirmButtonColor: '#1F4181'});
             return false;
         }
     });
 
 
     $(document).ready(function() {
-        $('.banner').unslider({
-            speed: 500,               //  The speed to animate each slide (in milliseconds)
-            delay: 5000,              //  The delay between slide animations (in milliseconds)
-            dots: true,
-            fluid: true              //  Support responsive design. May break non-responsive designs
-        });
+        //$('.banner').unslider({
+        //    speed: 500,               //  The speed to animate each slide (in milliseconds)
+        //    delay: 5000,              //  The delay between slide animations (in milliseconds)
+        //    dots: true,
+        //    fluid: true              //  Support responsive design. May break non-responsive designs
+        //});
 
         $('input:radio').iCheck({
            checkboxClass: 'icheckbox_minimal',
@@ -226,3 +229,5 @@
     });
 </script>
 @endsection
+                            
+                            

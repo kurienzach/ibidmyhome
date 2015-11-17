@@ -1,5 +1,10 @@
 @extends('user.base')
 
+@section('head')
+@parent
+    <title>Payment Error!!! - IBidMyHome</title>
+@stop
+
 @section('content')
 <div class="content" style="text-align: center;">
     <h3>An error occured during your payment!!!</h3>

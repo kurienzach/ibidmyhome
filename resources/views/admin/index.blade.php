@@ -3,7 +3,9 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Bids</h1>
+            <h1 class="page-header clearfix">Bids
+            <a href="{{url('/admin/bid_csv')}}" class="btn btn-primary" style="display: right; float: right;">Download CSV</a>
+            </h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>

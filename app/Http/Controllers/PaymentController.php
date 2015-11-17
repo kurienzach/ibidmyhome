@@ -27,7 +27,7 @@ class PaymentController extends Controller
     private function sendSmS($phoneno, $user, $flat_id, $project){
         $sp_url     = "";
         $response   = "";
-        $smsTxt = "Dear " . $user . ", Thank you for registering with www.ibidmyhome.com. You may now place your bid either online or by getting in touch with one of the HDFC Realty relationship managers at 022-67221919.";
+        $smsTxt = "Dear " . $user . ", thank you for registering with ibidmyhome.com.  You may now place your bid online or call us on +91 80 44559966 for assistance.";
         $sp_url = "http://trans.smscuppa.com/sendsms.jsp?user=mybids&password=mybids&mobiles=". $phoneno ."&sms=". urlencode($smsTxt) ."&senderid=MYBIDS&version=3";
         
         if($sp_url != ""){
@@ -75,6 +75,13 @@ class PaymentController extends Controller
         $user = Auth::user();
         if ($user->payment_done)
             return redirect('/bid');
+            
+        if(Auth::user()->payment_id == null) {
+            $user = Auth::user();
+            $user->payment_id = 81;
+            $user->save();
+            $request->session()->flash('newpayment', 'Password reset mail send successfully');           	
+        }
 
         $projects = Project::all();
         return view('user.payment', compact('user', 'projects'));
@@ -112,10 +119,8 @@ class PaymentController extends Controller
             array(
                 'project_id' => 'required',
                 'CustName' => 'required',
-                'CustPan' => 'required',
                 'cust_mail' => 'required|email',
                 'cust_mobile' => 'required',
-                'CustAddress' => 'required',
                 'CustCity' => 'required',
                 'CustPincode' => 'required',
                 'CustState' => 'required',
@@ -142,18 +147,18 @@ class PaymentController extends Controller
         $booking->cust_name = $request->get('cust_name');
         $booking->cust_mail = $request->get('cust_mail');
         $booking->cust_mobile = $request->get('cust_mobile');
-        $booking->cust_address = $request->get('cust_address');
+        $booking->cust_address = '';
         $booking->city = $request->get('city');
         $booking->state = $request->get('state');
         $booking->country = $request->get('country');
         $booking->pincode = $request->get('pincode');
-        $booking->panno = $request->get('panno');
+        $booking->panno = '';
 
         //$booking->save();
 
         $booking->booking_id='IBIDMYHOME' . Carbon::now('Asia/Kolkata')->format('HisdmY') . $booking->id;
         $booking->paymentstatus="Pending";
-        $booking->amount=2.00;
+        $booking->amount=549.00;
 
         $booking->save();
 
@@ -243,12 +248,13 @@ class PaymentController extends Controller
             // Send email to customer
             Mail::send('mails.booking_success', ['booking' => $booking], function($m) use ($booking){
                 $m->to($booking->cust_mail, $booking->cust_name);
-                $m->subject('IBIDMYHOME Registration Successful');
+                $m->subject('IBIDMYHOME Payment Confirmation');
             });
             // Send email to admin
             Mail::send('mails.new_booking', ['booking' => $booking], function($m) use ($booking) {
                 $m->to('nitin.verma@providenthousing.com', 'IBidMyHome');
                 $m->cc('anamika.choudhary@puravankara.com', 'IBidMyHome');
+                $m->cc('pavit.ponnanna@puravankara.com', 'IBidMyHome');
                 $m->subject('New Payment received' . $booking->project->name);
             });
             

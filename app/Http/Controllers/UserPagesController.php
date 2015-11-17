@@ -19,7 +19,7 @@ class UserPagesController extends Controller
     private function sendSmS($phoneno, $user, $unit, $bid_value){
         $sp_url     = "";
         $response   = "";
-        $smsTxt = "Dear " . $user . ", Thank you for Placing your bid on ibidmyhome.com. We have e-mailed your chosen Property Bid details along with further steps. For any queries write us @support@ibidmyhome.com";
+        $smsTxt = "Dear " . $user . ", thank you for placing your bid on ibidmyhome.com. We have mailed you details of your chosen Property & your bid amount, for your reference.";
         $sp_url = "http://trans.smscuppa.com/sendsms.jsp?user=mybids&password=mybids&mobiles=". $phoneno ."&sms=". urlencode($smsTxt) ."&senderid=MYBIDS&version=3";
         
         if($sp_url != ""){
@@ -50,8 +50,9 @@ class UserPagesController extends Controller
     // Returns the main index page
     public function index()
     {
-        if (Auth::check() && !Auth::user()->payment_done)
+        if (Auth::check() && !Auth::user()->payment_done) {
             return redirect('/payment'); 
+        }
 
         $projects = Project::all()->groupBy('city')->toJSON();
         return view('user.index', compact('projects'));
@@ -80,7 +81,7 @@ class UserPagesController extends Controller
 
         // Verify the unit ID belongs to the project user selected
         $project_unit = ProjectUnit::findOrFail($request->get('unit_id'));
-        // [TODO] Test if this check is working
+        // [TODO] Test if this check is  working
         if ($project_unit->project->id != Project::find($request->get('project_id'))->id) {
             return redirect('/bid');
         }
@@ -96,7 +97,7 @@ class UserPagesController extends Controller
         // Check if user already has placed a bid
         if ($user->bid == null) {
             $bid = new Bid();
-            $request->session()->flash('alert', 'We will contact you shortly for a post-dated cheque of INR 3 Lakh. This is mandatory for you to be eligible for the final unit allotment. The cheque will not be banked unless you are alloted the unit of your choice');
+            $request->session()->flash('alert', 'We will contact you shortly to complete your Bidding Process by collecting a booking cheque of Rs.3 lakh. Your cheque will not be banked without your consent.');
             $request->session()->flash('alert-title', 'Thank you for placing your bid');
             $is_new_bid = true;
         }
@@ -140,20 +141,21 @@ class UserPagesController extends Controller
             Mail::send('mails.new_bid', ['user' => $user], function($m) use ($user){
                 $m->to('nitin.verma@providenthousing.com', 'IBidMyHome');
                 $m->cc('anamika.choudhary@puravankara.com', 'IBidMyHome');
+                $m->cc('pavit.ponnanna@puravankara.com', 'IBidMyHome');                
                 $m->subject('IBIDMYHOME Bid Placed');
             });
             
             // Send mail to user
 	        Mail::send('mails.bid_first', ['user' => $user], function($m) use ($user){
 	            $m->to($user->email, $user->name);
-	            $m->subject('IBIDMYHOME Bid Placed');
+	            $m->subject('Ibidmyhome Bid confirmation');
 	        });
         }
         else {
 	        // Send mail to user
 	        Mail::send('mails.bid_modified', ['user' => $user], function($m) use ($user){
 	            $m->to($user->email, $user->name);
-	            $m->subject('IBIDMYHOME Bid Modified');
+	            $m->subject('Ibidmyhome Bid Modified');
 	        });
         }
       

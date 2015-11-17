@@ -336,14 +336,18 @@ height: 100%;
 
 .float-customer-care {
     font-size: 14px;
+    width: 39px;
+    height: 254px;
     background: #030708;
     color: #fff;
     position: fixed;
-    top: 60%; left: 0px;
-    padding: 10px 15px;
+    top: 30%; left: 0px;
+}
 
-    transform: rotate(270deg);
-    transform-origin: left top 0;
+.float-customer-care img{
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .project {
@@ -489,7 +493,7 @@ height: 100%;
     background: #1F4181;
     display: inline-block;
     padding: 10px 15px;
-    color: #fff;
+       color: #fff;
     border-radius: 2px;
     font-size: 15px;
     text-decoration: none;

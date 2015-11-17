@@ -8,7 +8,10 @@ use App\Http\Controllers\Controller;
 
 use App\User;
 use App\Bid;
+use App\Payment;
 use App\ProjectUnit;
+
+use Response;
 
 class AdminController extends Controller
 {
@@ -52,6 +55,51 @@ class AdminController extends Controller
 
         $bid = Bid::findOrFail($id);
         return view('admin.bid_details', compact('bid'));
+    }
+    
+    public function bid_csv(Request $request)
+    {
+        if (!$request->session()->has('admin')) {
+            return redirect('/admin/login');
+        }
+        
+        $users = User::all();
+        $csv = "Register Timestamp\tUser Name\tEmail\tMobile\tAddress\tProject Name\tHeard From\tHeard From Name\tHeard From Mobile\tPAN No\tUnit Type\tBid Value\tHigher Floor\tPremium View\n";
+
+        foreach ($users as $user) {
+            // Add user details
+            $csv .= $user->created_at . "\t";            
+            $csv .= $user->name . "\t";
+            $csv .= $user->email . "\t";
+            $csv .= $user->mobile . "\t";
+            
+            
+            $csv .= trim(preg_replace('/\s\s+/', ' ',$user->address)) . ',' . $user->city . ',' . $user->state . ',' . $user->country . ',' . $user->pincode . "\t";
+            $csv .= $user->project->name . "\t";
+            if ($user->payment) {
+                $payment = $user->payment;
+                $csv .= $payment->heard_src . "\t";
+                $csv .= $payment->heard_field1 . "\t";
+                $csv .= $payment->heard_field2 . "\t";
+                $csv .= $payment->panno . "\t";
+            }
+
+            if ($user->bid) {
+                $bid = $user->bid;
+                $csv .= $bid->project_unit->unit_type . '(' . $bid->project_unit->area . ")\t";
+                $csv .= $bid->bid_value . "\t";
+                ($bid->higher_floor)?($csv .= "Yes\t"):($csv .= "No\t");
+                ($bid->premium_view)?($csv .= "Yes\t"):($csv .= "No\t");
+            }
+
+            $csv .= "\n";
+        }
+
+        $response = Response::make($csv, 200);
+        $response->header('content-type', 'application/csv');
+        $response->header('content-disposition', "inline; filename='ibidmyhome_bids.csv'");
+        return $response;
+
     }
     
     public function projects(Request $request)
