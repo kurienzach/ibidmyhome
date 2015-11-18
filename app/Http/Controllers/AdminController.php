@@ -10,6 +10,7 @@ use App\User;
 use App\Bid;
 use App\Payment;
 use App\ProjectUnit;
+use App\Coupon;
 
 use Response;
 
@@ -148,4 +149,25 @@ class AdminController extends Controller
         $unit->save();
         return redirect('/admin/projects');
     }
+
+    public function coupons()
+    {
+        $coupons = Coupon::all();
+        return view('admin.coupons', compact('coupons'));
+    }
+    
+    public function add_coupons(Request $request)
+    {
+        // Parse comma separated coupons
+        $coupons = explode(',', $request->get('coupons'));
+
+        foreach($coupons as $coupon) {
+            $new_coupon = new Coupon();
+            $new_coupon->coupon_code = trim($coupon);
+            $new_coupon->save(); 
+        }
+        
+        return redirect('/admin/coupons');
+    }
 }
+

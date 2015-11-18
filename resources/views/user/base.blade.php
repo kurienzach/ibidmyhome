@@ -71,7 +71,7 @@
                 <img class="modal-close" src="{{ asset('img/icon-close.svg') }}" alt="">
                 <div class="modal-content">
                     <div class="contact-form">
-                        @if (count($errors) > 0)
+                        @if (count($errors) > 0 && !Session::has('no_login_error'))
                         <script>
                             modal_on_load = true;
                         </script>
@@ -115,7 +115,7 @@
                 <img class="modal-close" src="{{ asset('img/icon-close.svg') }}" alt="">
                 <div class="modal-content">
                     <div class="contact-form">
-                        @if (count($errors) > 0)
+                        @if (count($errors) > 0 && !Session::has('no_login_error'))
                         <script>
                             modal_on_load = true;
                         </script>

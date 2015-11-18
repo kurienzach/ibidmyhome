@@ -144,9 +144,19 @@
                         <div style="clear: both;">
                         </div>
                     </div>
-                    <div style="clear: both; height: 15px;">
+                    
+                    <!-- Coupon Code -->
+                    <h2 class="frm_heading">COUPON</h2>
+                    <div class="frm_fields padbt10">
+                        <div class="fl_left padr10">
+                            <span class="span_required"></span>
+                            <input class="input_style" maxlength="100" name="coupon_code" placeholder="COUPON CODE" type="text" value="">
+                        </div>
                     </div>
+
+                    <div style="clear: both; height: 15px;"> </div>
                 </div>
+
 
                 <div class="agreement_container frm_fields" style="margin-top: 20px;">
                     <label class="lblAgreement">
@@ -205,23 +215,23 @@
         });
         
         
-	@if (Session::has('newpayment'))
-        	console.log('call');
-	        Waybeo.LeadResponder.Init({
-			hash: '55bef2bad2efc',
-		});
+	//@if (Session::has('newpayment'))
+            //console.log('call');
+			//Waybeo.LeadResponder.Init({
+			//hash: '55bef2bad2efc',
+		//});
 		
-		Waybeo.LeadResponder.MakeCall({
-			'hash': '55bef2bad2efc',
-			'route_hash': '563c521cdc61d',
-			'callerid_hash': '563c525f61e52',
-			'contact_number': '{{ $user->mobile }}',
-			'optional_params': {
-				name: '{{ $user->name }}',
-				email: '{{ $user->email }}',
-			}
-		});
-	@endif
+		//Waybeo.LeadResponder.MakeCall({
+			//'hash': '55bef2bad2efc',
+			//'route_hash': '563c521cdc61d',
+			//'callerid_hash': '563c525f61e52',
+			//'contact_number': '{{ $user->mobile }}',
+			//'optional_params': {
+				//name: '{{ $user->name }}',
+				//email: '{{ $user->email }}',
+			//}
+		//});
+	//@endif
         
         jQuery('.frmOnline').submit(function (event) {
             if (!$("#cust_mobile").intlTelInput("isValidNumber")) {

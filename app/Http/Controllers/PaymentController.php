@@ -10,6 +10,7 @@ use Mail;
 
 use App\Project;
 use App\Payment;
+use App\Coupon;
 
 use Carbon\Carbon;
 
@@ -76,12 +77,12 @@ class PaymentController extends Controller
         if ($user->payment_done)
             return redirect('/bid');
             
-        if(Auth::user()->payment_id == null) {
-            $user = Auth::user();
-            $user->payment_id = 81;
-            $user->save();
-            $request->session()->flash('newpayment', 'Password reset mail send successfully');           	
-        }
+        //if(Auth::user()->payment_id == null) {
+            //$user = Auth::user();
+            //$user->payment_id = 81;
+            //$user->save();
+            //$request->session()->flash('newpayment', 'Password reset mail send successfully');           	
+        //}
 
         $projects = Project::all();
         return view('user.payment', compact('user', 'projects'));
@@ -162,6 +163,44 @@ class PaymentController extends Controller
 
         $booking->save();
 
+        // Logic for coupon code
+        if ($request->get('coupon_code')) {
+            $coupon = Coupon::where('coupon_code', $request->get('coupon_code'))->first();
+
+            if (isset($coupon)) {
+                // Check if the coupon is used?
+                if ($coupon->used) {
+                    $request->session()->flash('no_login_error', '1');
+                    return redirect()->back()->withInput()->withErrors(['msg' => 'Coupon is already used']); 
+                }
+
+                $booking->paymentstatus="Success (Coupon)";
+
+                $user->mobile = $booking->cust_mobile;
+                $user->address = $booking->cust_address;
+                $user->city = $booking->city;
+                $user->state = $booking->state;
+                $user->country = $booking->country;
+                $user->pincode = $booking->pincode;
+                $user->payment_done = true;
+
+                $user->payment_id = $booking->id;
+
+                $coupon->used = true;
+                $coupon->user_id = $user->id;
+
+                $coupon->save();
+                $user->save();
+                $booking->save();
+
+                return view('user.payment_success');
+            }
+            else {
+                $request->session()->flash('no_login_error', '1');
+                return redirect()->back()->withInput()->withErrors(['msg' => 'Invalid Coupon Code']); 
+            }
+        }
+
             // Temp Code for testing
             $booking->paymentstatus="Success";
 
@@ -181,7 +220,7 @@ class PaymentController extends Controller
 
             $booking->save();
 
-            return view('user.payment_success');
+            //return view('user.payment_success');
 
         $msg = $this->create_billdesk_msg($booking->booking_id, $booking->cust_name, 'IBIDMYHOME', $booking->amount);
 

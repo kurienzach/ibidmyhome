@@ -83,6 +83,9 @@
                         <li>
                             <a href="{{ url('admin/users') }}"><i class="fa fa-users fa-fw"></i> Users</a>
                         </li>
+                        <li>
+                            <a href="{{ url('admin/coupons') }}"><i class="fa fa-bullhorn fa-fw"></i> Coupons</a>
+                        </li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
